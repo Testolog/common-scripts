@@ -69,10 +69,12 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-if [ -z $HOME/env.sh ]; then
+if ! [  -z $HOME/env.sh ]; then
+ echo "load env.sh"
  source $HOME/env.sh
 fi
 
+source $HOME/common-scripts/init.sh
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
