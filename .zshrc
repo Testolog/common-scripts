@@ -56,7 +56,6 @@ ZSH_THEME="norm"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$HOME/common-scripts/testolog-common
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -74,7 +73,8 @@ if ! [  -z $HOME/env.sh ]; then
  source $HOME/env.sh
 fi
 
-source $HOME/common-scripts/init.sh
+
+
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -99,8 +99,7 @@ source $HOME/common-scripts/init.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+#load alias
 
 

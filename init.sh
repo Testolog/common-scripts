@@ -5,6 +5,7 @@ function atom_plugins(){
     return ${PIPESTATUS[0]}
 }
 
+#brew install gnu-sed
 
 if [[ -x "$(command -v apm)" && ! -e ${AMP_INIT} ]]; then
       echo "install atom_plugins"

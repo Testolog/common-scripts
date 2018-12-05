@@ -4,7 +4,6 @@ call vundle#begin()
     Plugin 'Smart-Tabs'
     Plugin 'dracula/vim'
     Plugin 'vim-syntastic/syntastic'
-    Plugin 'scrooloose/nerdtree'
 call vundle#end()
 
 syntax on
@@ -17,10 +16,4 @@ filetype plugin indent on
 filetype plugin on
 
 
-let NERDTreeIgnore=['\.pyc$', '\~$']
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-map <C-m> :NERDTreeToggle<CR>
 
