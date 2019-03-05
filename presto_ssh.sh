@@ -1,6 +1,13 @@
 #!/bin/bash
 
-source ~/env.sh
+NOT_PROVIDED_CONN_SETTINGS=120
+CONN_FAILED=3
+NOT_EXISTS_QUERY_FILE=2
+
+if ! [[ -z ~/env.sh ]]; then
+    source ~/env.sh
+fi
+
 source ${COMMON_SCRIPTS}/logging.sh
 
 if [[ -z ${SSH_HOST_PRESTO} ]]; then
@@ -9,14 +16,6 @@ if [[ -z ${SSH_HOST_PRESTO} ]]; then
 else
     info "port ${SSH_PORT_PRESTO} and host ${SSH_HOST_PRESTO}"
 fi
-
-
-
-
-
-NOT_PROVIDED_CONN_SETTINGS=120
-CONN_FAILED=3
-NOT_EXISTS_QUERY_FILE=2
 
 verbosity=5
 function remote_execute(){
