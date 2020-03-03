@@ -3,9 +3,11 @@
 function mem() {
   vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'
 }
+#todo optimize
 function remove_docker_images() {
-  _images=$(docker images | awk '{print $3}')
-  for img in $_images; do
+  _images=()
+  while IFS='' read -r line; do _containers+=("$line"); done < <(docker images | awk awk '{print $3}')
+  for img in "${_images[@]:1}"; do
     docker rmi -f "$img"
   done
 }
