@@ -1,0 +1,103 @@
+<scheme name="MyDarcula" version="142" parent_scheme="Darcula">
+  <metaInfo>
+    <property name="created">2020-07-22T14:24:48</property>
+    <property name="ide">idea</property>
+    <property name="ideVersion">2020.1.2.0.0</property>
+    <property name="modified">2020-07-22T14:24:54</property>
+    <property name="originalScheme">MyDarcula</property>
+  </metaInfo>
+  <attributes>
+    <option name="DEFAULT_BRACES">
+      <value>
+        <option name="FOREGROUND" value="c47acb" />
+      </value>
+    </option>
+    <option name="DEFAULT_BRACKETS">
+      <value>
+        <option name="FOREGROUND" value="21c0e3" />
+      </value>
+    </option>
+    <option name="DEFAULT_CLASS_NAME">
+      <value>
+        <option name="FOREGROUND" value="ede0eb" />
+      </value>
+    </option>
+    <option name="DEFAULT_FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="b181a0" />
+      </value>
+    </option>
+    <option name="DEFAULT_FUNCTION_DECLARATION">
+      <value>
+        <option name="FOREGROUND" value="7dba9a" />
+      </value>
+    </option>
+    <option name="DEFAULT_PARENTHS">
+      <value>
+        <option name="FOREGROUND" value="8fdd49" />
+      </value>
+    </option>
+    <option name="PARAMETER_ATTRIBUTES">
+      <value>
+        <option name="FOREGROUND" value="a9b7c6" />
+      </value>
+    </option>
+    <option name="Scala Anonymous Parameter">
+      <value>
+        <option name="FOREGROUND" value="a9bed4" />
+      </value>
+    </option>
+    <option name="Scala Brackets">
+      <value>
+        <option name="FOREGROUND" value="1d6cba" />
+      </value>
+    </option>
+    <option name="Scala Class">
+      <value>
+        <option name="FOREGROUND" value="dec6da" />
+      </value>
+    </option>
+    <option name="Scala Class method call">
+      <value>
+        <option name="FOREGROUND" value="748ec9" />
+      </value>
+    </option>
+    <option name="Scala Local value">
+      <value>
+        <option name="FOREGROUND" value="c7c419" />
+      </value>
+    </option>
+    <option name="Scala Method declaration">
+      <value>
+        <option name="FOREGROUND" value="738eb6" />
+      </value>
+    </option>
+    <option name="Scala Object">
+      <value>
+        <option name="FOREGROUND" value="709aae" />
+      </value>
+    </option>
+    <option name="Scala Object method call">
+      <value>
+        <option name="FOREGROUND" value="558d6b" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="Scala Template val">
+      <value>
+        <option name="FOREGROUND" value="b0acd3" />
+        <option name="FONT_TYPE" value="2" />
+      </value>
+    </option>
+    <option name="Scala Type Alias">
+      <value>
+        <option name="FOREGROUND" value="71b0ad" />
+      </value>
+    </option>
+    <option name="Scala Type parameter">
+      <value>
+        <option name="FOREGROUND" value="71b0ad" />
+      </value>
+    </option>
+  </attributes>
+</scheme>
