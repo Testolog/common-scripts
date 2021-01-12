@@ -8,8 +8,8 @@ function remove_docker_images() {
   _images=()
   while IFS='' read -r line; do _images+=("$line"); done < <(docker images | awk '{print $3}')
   for img in "${_images[@]:1}"; do
-    	echo "$img"
-	docker rmi -f "$img"
+    echo "$img"
+    docker rmi -f "$img"
   done
 }
 
