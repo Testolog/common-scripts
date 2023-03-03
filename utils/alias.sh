@@ -21,7 +21,16 @@ function stop_all_container_docker() {
     docker stop $cont
   done
 }
+function md2pdf() {
+  if (($# != 2)); then
+    echo "Usage: md2pdf <input.md> <output.pdf>"
+    exit 1
+  fi
+  markdown $1 | htmldoc --cont --headfootsize 8.0 --linkcolor blue --linkstyle plain --format pdf14 - >$2
+}
+
 alias smem="mem"
+alias ports="lsof -PiTCP -sTCP:LISTEN"
 alias drm="remove_docker_images"
 alias sdc="stop_all_container_docker"
 alias gh="history | grep"

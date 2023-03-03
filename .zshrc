@@ -15,7 +15,11 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-PROMPT="%{$fg[yellow]%}λ %{$fg[green]%}%c $(git_prompt_info)%{$reset_color%} %{$fg[yellow]%}→%{$reset_color%} "
+PROMPT="%{$fg[yellow]%}λ %{$fg[green]%}%c $(git_prompt_info)%{$reset_color%} %{$fg[red]%}%D{%H:%M:%S}%{$reset_color%} %{$fg[yellow]%}→%{$reset_color%} "
+HISTTIMEFORMAT="%d-%m-%y %T "
+HISTIGNORE="ls:ll:cd:pwd:bg:fg:history"
+HISTCONTROL=ignoreboth:erasedups
+
 if [ -f $HOME/${USER}_env.sh ]; then
  echo "load ${USER}_env.sh"
  source $HOME/${USER}_env.sh
