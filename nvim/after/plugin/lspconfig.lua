@@ -104,48 +104,50 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 )
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    local bufopts = function(desc)
+        return { desc = desc, noremap = true, silent = true, buffer = bufnr }
+    end
 
     -- Displays hover information about the symbol under the cursor
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts("Displays hover information"))
 
     -- Jump to the definition
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts("Go to definition"))
 
     -- Jump to declaration
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts("Go to declaration"))
 
     -- Lists all the implementations for the symbol under the cursor
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts("All implementations"))
 
     -- Jumps to the definition of the type symbol
-    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, bufopts(""))
 
     -- Lists all the references
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts("All references"))
 
     vim.keymap.set('n', '<leader>l', function()
         vim.lsp.buf.format { async = true }
-    end, bufopts)
+    end, bufopts("formatting"))
 
     -- Displays a function's signature information
-    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts("signature"))
 
     -- Renames all references to the symbol under the cursor
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.rename, bufopts("rename"))
 
-    -- Selects a code action available at the current cursor position
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('x', '<leader>wq', vim.lsp.buf.range_code_action, bufopts)
+    -- Selects a cmde action available at the current cursor position
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.code_action, bufopts("actions"))
+    vim.keymap.set('x', '<leader>wq', vim.lsp.buf.range_code_action, bufopts("actions"))
 
     -- Show diagnostics in a floating window
-    vim.keymap.set('n', 'gl', vim.diagnostic.open_float, bufopts)
+    vim.keymap.set('n', 'gl', vim.diagnostic.open_float, bufopts("diagnostics"))
 
     -- Move to the previous diagnostic
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
+    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts("prev diagnostics"))
 
     -- Move to the next diagnostic
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts("next diagnostics"))
 end
 lspconfig.tsserver.setup({ on_attach = on_attach })
 lspconfig.lua_ls.setup({ on_attach = on_attach })
