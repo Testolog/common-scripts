@@ -1,0 +1,41 @@
+<scheme name="MyDarcula" version="142" parent_scheme="Darcula">
+  <metaInfo>
+    <property name="created">2020-07-22T13:45:51</property>
+    <property name="ide">Python</property>
+    <property name="ideVersion">2020.1.2.0.0</property>
+    <property name="modified">2020-07-22T13:46:02</property>
+    <property name="originalScheme">_@user_Darcula</property>
+  </metaInfo>
+  <attributes>
+    <option name="DEFAULT_BRACES">
+      <value>
+        <option name="FOREGROUND" value="fffd0c" />
+      </value>
+    </option>
+    <option name="DEFAULT_BRACKETS">
+      <value>
+        <option name="FOREGROUND" value="108fff" />
+      </value>
+    </option>
+    <option name="DEFAULT_PARENTHS">
+      <value>
+        <option name="FOREGROUND" value="12ff30" />
+      </value>
+    </option>
+    <option name="JUPYTER_SELECTED_CELL">
+      <value>
+        <option name="FOREGROUND" value="587973" />
+      </value>
+    </option>
+    <option name="PY.FUNCTION_CALL">
+      <value>
+        <option name="FOREGROUND" value="a7ff" />
+      </value>
+    </option>
+    <option name="PY.METHOD_CALL">
+      <value>
+        <option name="FOREGROUND" value="ff008e" />
+      </value>
+    </option>
+  </attributes>
+</scheme>
