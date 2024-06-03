@@ -12,7 +12,7 @@
 ## License: Public domain; do as you wish
 ##
 
-exec 3>&2 # logging stream (file descriptor 3) defaults to STDERR
+exec 3>&2   # logging stream (file descriptor 3) defaults to STDERR
 verbosity=3 # default to show warnings
 silent_lvl=0
 crt_lvl=1
@@ -28,10 +28,10 @@ warn() { log $wrn_lvl "WARNING: $1"; }
 info() { log $inf_lvl "INFO: $1"; } # "info" is already a command
 debug() { log $dbg_lvl "DEBUG: $1"; }
 log() {
-    if [ $verbosity -ge $1 ]; then
-        datestring=`date +'%Y-%m-%d %H:%M:%S'`
-        # Expand escaped characters, wrap at 70 chars, indent wrapped lines
-        echo -e "$datestring $2" | fold -w300 -s
-#        | sed '2~1s/^/  /' >&3
-    fi
+  if [ $verbosity -ge $1 ]; then
+    datestring=$(date +'%Y-%m-%d %H:%M:%S')
+    # Expand escaped characters, wrap at 70 chars, indent wrapped lines
+    echo -e "$datestring $2" | fold -w300 -s
+    #        | sed '2~1s/^/  /' >&3
+  fi
 }
