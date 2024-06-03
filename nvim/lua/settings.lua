@@ -13,9 +13,8 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
-
 vim.opt.wrap = false
-
+vim.opt.clipboard = "unnamedplus"
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
@@ -29,7 +28,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "120"
+vim.opt.colorcolumn = "80"
 
 vim.keymap.set("n", "<leader>pe", vim.cmd.Ex, { desc = "file explorer " })
 vim.keymap.set("v", "<C-S-DOWN>", ":m '>+1<CR>gv=gv", { desc = "move selected line down" })

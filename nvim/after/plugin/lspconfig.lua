@@ -33,10 +33,10 @@ cmp.setup({
         end
     },
     sources = {
-        { name = 'path' },
+        --      { name = 'path' },
         { name = 'nvim_lsp', keyword_length = 1 },
-        { name = 'buffer',   keyword_length = 3 },
-        { name = 'luasnip',  keyword_length = 2 },
+        --      { name = 'buffer',   keyword_length = 3 },
+        --      { name = 'luasnip',  keyword_length = 2 },
     },
     window = {
         completion = {
@@ -135,18 +135,24 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<leader>gwr', vim.lsp.buf.rename, bufopts("rename"))
 
     -- Selects a cmde action available at the current cursor position
+    -- Show diagnostics in a floating window
+    vim.keymap.set('n', '<leader>dv', function(cfg)
+        return vim.diagnostic.open_float(cfg, { focus = true, scope = "cursor" })
+    end, bufopts("diagnostics"))
+
+    ---- Move to the previous diagnostic
+    vim.keymap.set('n', '<leader>dp', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics"))
+
+    ---- Move to the next diagnostic
+    vim.keymap.set('n', '<leader>dn', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics"))
     vim.keymap.set('n', '<leader>gwa', vim.lsp.buf.code_action, bufopts("code actions"))
     vim.keymap.set('v', '<leader>gwq', vim.lsp.buf.range_code_action, bufopts("range code actions"))
 end
 
--- Show diagnostics in a floating window
---vim.keymap.set('n', '<leader>wd', vim.lsp.diagnostic.open_float, bufopts("diagnostics"))
+require("mason-lspconfig").setup({})
+--  require("lspconfig").pyright.setup({ on_attach = on_attach })
+--  require("lspconfig").lua_ls.setup({ on_attach = on_attach })
 
----- Move to the previous diagnostic
---vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics"))
-
----- Move to the next diagnostic
---vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics"))
 require("mason-lspconfig").setup_handlers {
     function(server_name) -- default handler (optional)
         lspconfig[server_name].setup({ on_attach = on_attach })
