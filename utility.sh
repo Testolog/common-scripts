@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 
+function exists { which $1 &> /dev/null }
+
+function percol_select_history() {
+    local tac
+    exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
+    BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
+    CURSOR=$#BUFFER         # move cursor
+    zle -R -c               # refresh
+}
+
 function mem() {
   vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'
 }
+
 #todo optimize
 function remove_docker_images() {
   _images=()
@@ -11,6 +22,26 @@ function remove_docker_images() {
     echo "$img"
     docker rmi -f "$img"
   done
+}
+function history_memory(){
+    PROCESS=()
+    while IFS='' read -r r; do PROCESS+=("$r"); done < <(ps -A -o "pid,ppid,%cpu,%mem,comm" | awk ' {OFS=","; print $1,$2,$3,$4,$5 }')
+    echo "${#PROCESS[*]}"
+
+    for row in "${PROCESS[@]:1}"; do
+      splitarray=()
+      while IFS= read -r r; do splitarray+=("$r"); done < <(echo "${row//,/\n}")
+      pid=${splitarray[1]}
+      ppid=${splitarray[2]}
+      cpu=${splitarray[3]}
+      mem=${splitarray[4]}
+      comm=${splitarray[5]}
+      if (($cpu > 10)); then
+        echo "${row}"
+        echo "$pid", "$comm"
+      fi
+    done
+
 }
 
 function stop_all_container_docker() {
@@ -21,6 +52,7 @@ function stop_all_container_docker() {
     docker stop $cont
   done
 }
+
 function md2pdf() {
   if (($# != 2)); then
     echo "Usage: md2pdf <input.md> <output.pdf>"
@@ -32,12 +64,4 @@ function md2pdf() {
 function vim_new_project() {
     tmux new-session -d -s my_session 'ruby run.rb'
 }
-alias smem="mem"
-alias ports="lsof -PiTCP -sTCP:LISTEN"
-alias drm="remove_docker_images"
-alias sdc="stop_all_container_docker"
-alias gh="history | grep"
-#alias 'tmux --kill-all'="tmux ls | grep : | cut -d. -f1 | awk '{print substr(\$1, 0, length(\$1)-1)}' | (while IFS='' read -r p1; do if ! [ -z \${p1} ]; then tmux kill-session -t \$p1; else echo \$p1; fi; done)"
-alias gps="ps aux -xl | grep"
-alias vim="nvim"
 
