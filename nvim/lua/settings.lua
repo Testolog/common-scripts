@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
-vim.keymap.set("n","<leader>pe", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pe", vim.cmd.Ex)
 
-vim.opt.encoding="UTF-8"
+vim.opt.encoding = "UTF-8"
 
 vim.opt.guicursor = ""
 
@@ -31,5 +31,5 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "120"
-vim.keymap.set("v", "<M-S-DOWN>", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "<M-S-UP>", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<C-S-DOWN>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "<C-S-UP>", ":m '<-2<CR>gv=gv")

@@ -1,5 +1,4 @@
 require('mason').setup({})
-require('mason-lspconfig').setup({})
 local lspconfig = require('lspconfig')
 local cmp = require('cmp')
 local luasnip = require('luasnip')
@@ -63,8 +62,8 @@ cmp.setup({
         end,
     },
     mapping = {
-        ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
-        ['<Down>'] = cmp.mapping.select_next_item(select_opts),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(select_opts),
+        ['<Tab>'] = cmp.mapping.select_next_item(select_opts),
         ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
         ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
@@ -120,7 +119,7 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts("All implementations"))
 
     -- Jumps to the definition of the type symbol
-    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, bufopts(""))
+    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, bufopts("Go to definition symbol"))
 
     -- Lists all the references
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts("All references"))
@@ -136,26 +135,20 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', '<leader>wr', vim.lsp.buf.rename, bufopts("rename"))
 
     -- Selects a cmde action available at the current cursor position
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.code_action, bufopts("actions"))
-    vim.keymap.set('x', '<leader>wq', vim.lsp.buf.range_code_action, bufopts("actions"))
-
-    -- Show diagnostics in a floating window
-    vim.keymap.set('n', 'gl', vim.diagnostic.open_float, bufopts("diagnostics"))
-
-    -- Move to the previous diagnostic
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts("prev diagnostics"))
-
-    -- Move to the next diagnostic
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts("next diagnostics"))
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.code_action, bufopts("code actions"))
+    vim.keymap.set('v', '<leader>wq', vim.lsp.buf.range_code_action, bufopts("range code actions"))
 end
 
+-- Show diagnostics in a floating window
+--vim.keymap.set('n', '<leader>wd', vim.lsp.diagnostic.open_float, bufopts("diagnostics"))
+
+---- Move to the previous diagnostic
+--vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics"))
+
+---- Move to the next diagnostic
+--vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics"))
 require("mason-lspconfig").setup_handlers {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    function(server_name)      -- default handler (optional)
-        require("lspconfig")[server_name].setup {}
+    function(server_name) -- default handler (optional)
+        lspconfig[server_name].setup({ on_attach = on_attach })
     end,
 }
---lspconfig.tsserver.setup({ on_attach = on_attach })
---slspconfig.lua_ls.setup({ on_attach = on_attach })

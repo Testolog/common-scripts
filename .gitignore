@@ -158,11 +158,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-Будет удалено .idea/bashsupport_project.xml
-Будет удалено .idea/common-scripts.iml
-Будет удалено .idea/dataSources.local.xml
-Будет удалено .idea/dataSources/
-Будет удалено .idea/misc.xml
-Будет удалено .idea/modules.xml
-Будет удалено .idea/vcs.xml
-Будет удалено .idea/workspace.xml
+./nvim/lazy-lock.json
+./nvim/coc-settings.json
