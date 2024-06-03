@@ -5,8 +5,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="norm"
-
 DISABLE_AUTO_UPDATE="true"
 
 export UPDATE_ZSH_DAYS=13
@@ -17,6 +15,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+PROMPT="%{$fg[yellow]%}λ %{$fg[green]%}%c $(git_prompt_info)%{$reset_color%} %{$fg[yellow]%}→%{$reset_color%} "
 if [ -f $HOME/env.sh ]; then
  echo "load env.sh"
  source $HOME/env.sh
