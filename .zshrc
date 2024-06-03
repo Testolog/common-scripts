@@ -3,7 +3,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/rnad/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -56,7 +56,6 @@ ZSH_THEME="norm"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$HOME/common-scripts/testolog-common
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -68,6 +67,13 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+if ! [  -z $HOME/env.sh ]; then
+ echo "load env.sh"
+ source $HOME/env.sh
+fi
+
+
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -93,8 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+#load alias
 
 
