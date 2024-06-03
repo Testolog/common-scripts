@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pe", vim.cmd.Ex, {desc="file explorer "})
 
 vim.opt.encoding = "UTF-8"
 
@@ -31,5 +30,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "120"
-vim.keymap.set("v", "<C-S-DOWN>", ":m '>+1<CR>gv=gv", {desc = "move selected line down"})
-vim.keymap.set("v", "<C-S-UP>", ":m '<-2<CR>gv=gv",{desc = "move selected line up"})
+
+vim.keymap.set("n", "<leader>pe", vim.cmd.Ex, { desc = "file explorer " })
+vim.keymap.set("v", "<C-S-DOWN>", ":m '>+1<CR>gv=gv", { desc = "move selected line down" })
+vim.keymap.set("v", "<C-S-UP>", ":m '<-2<CR>gv=gv", { desc = "move selected line up" })
