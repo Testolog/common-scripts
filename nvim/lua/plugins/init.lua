@@ -70,6 +70,7 @@ local plugins = {
     },
     { "neovim/nvim-lspconfig" },
     { "christoomey/vim-tmux-navigator", lazy = false },
-    {"lewis6991/gitsigns.nvim"},
+    { "lewis6991/gitsigns.nvim" },
+    { "stevearc/aerial.nvim" }
 }
 return plugins
