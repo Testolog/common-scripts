@@ -68,7 +68,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-if ! [  -z $HOME/env.sh ]; then
+if [ -f $HOME/env.sh ]; then
  echo "load env.sh"
  source $HOME/env.sh
 fi
