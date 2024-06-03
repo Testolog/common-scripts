@@ -26,7 +26,11 @@ local plugins = {
         'nvim-treesitter/playground',
         dependecies = { 'nvim-treesitter/nvim-treesitter' }
     },
-    { "ThePrimeagen/harpoon" },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
     { "mbbill/undotree" },
     { "ryanoasis/vim-devicons" },
     { "vim-airline/vim-airline" },
@@ -53,6 +57,5 @@ local plugins = {
     },
     { "neovim/nvim-lspconfig" },
     { "christoomey/vim-tmux-navigator", lazy = false },
-    { "jose-elias-alvarez/null-ls.nvim" }
 }
 return plugins

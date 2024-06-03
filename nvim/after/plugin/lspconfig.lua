@@ -1,6 +1,5 @@
 require('mason').setup({})
 require('mason-lspconfig').setup({})
-require('luasnip.loaders.from_vscode').lazy_load()
 local lspconfig = require('lspconfig')
 local cmp = require('cmp')
 local luasnip = require('luasnip')
@@ -86,7 +85,7 @@ sign({ name = 'DiagnosticSignHint', text = '⚑' })
 sign({ name = 'DiagnosticSignInfo', text = '' })
 
 vim.diagnostic.config({
-    virtual_text = false,
+    virtual_text = true,
     severity_sort = true,
     float = {
         border = 'rounded',
@@ -149,6 +148,14 @@ local on_attach = function(client, bufnr)
     -- Move to the next diagnostic
     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts("next diagnostics"))
 end
-lspconfig.tsserver.setup({ on_attach = on_attach })
-lspconfig.lua_ls.setup({ on_attach = on_attach })
-lspconfig.pyright.setup({ on_attach = on_attach })
+
+require("mason-lspconfig").setup_handlers {
+    -- The first entry (without a key) will be the default handler
+    -- and will be called for each installed server that doesn't have
+    -- a dedicated handler.
+    function(server_name)      -- default handler (optional)
+        require("lspconfig")[server_name].setup {}
+    end,
+}
+--lspconfig.tsserver.setup({ on_attach = on_attach })
+--slspconfig.lua_ls.setup({ on_attach = on_attach })

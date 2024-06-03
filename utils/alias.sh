@@ -29,6 +29,9 @@ function md2pdf() {
   markdown $1 | htmldoc --cont --headfootsize 8.0 --linkcolor blue --linkstyle plain --format pdf14 - >$2
 }
 
+function vim_new_project() {
+    tmux new-session -d -s my_session 'ruby run.rb'
+}
 alias smem="mem"
 alias ports="lsof -PiTCP -sTCP:LISTEN"
 alias drm="remove_docker_images"
@@ -37,3 +40,4 @@ alias gh="history | grep"
 #alias 'tmux --kill-all'="tmux ls | grep : | cut -d. -f1 | awk '{print substr(\$1, 0, length(\$1)-1)}' | (while IFS='' read -r p1; do if ! [ -z \${p1} ]; then tmux kill-session -t \$p1; else echo \$p1; fi; done)"
 alias gps="ps aux -xl | grep"
 alias vim="nvim"
+

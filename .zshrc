@@ -11,11 +11,14 @@ export UPDATE_ZSH_DAYS=13
 ENABLE_CORRECTION="true"
 
 plugins=(
-  git init colored-man colorize pip python brew osx zsh-syntax-highlighting zsh-vi-mode
+  init colored-man colorize pip python brew osx zsh-syntax-highlighting zsh-vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
-PROMPT="%{$fg[yellow]%}%hƒ %{$fg[green]%}%c $(git_prompt_info)%{$reset_color%} %{$fg[red]%}%D{%H:%M:%S}%{$reset_color%} %{$fg[yellow]%}→%{$reset_color%} "
+NEW_LINE=$'\n'
+GIT_PROM='%{$fg[green]%}%c $(git_prompt_info)%{$reset_color%}'
+TIME_PROM='%{$fg[red]%}%D{%H:%M:%S}%{$reset_color%}'
+PROMPT="%{$fg[yellow]%}%hƒ ${GIT_PROM} ${TIME_PROM} ${NEW_LINE}%{$fg[yellow]%}→%{$reset_color%} "
 HISTTIMEFORMAT="%d-%m-%y %T "
 HISTORY_IGNORE="(ls|la|ll|cd|pwd|bg|fg|history)"
 HISTCONTROL=ignoreboth:erasedups
