@@ -1,5 +1,4 @@
 function exists { which $1 &> /dev/null }
-
 function percol_select_history() {
     local tac
     exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
@@ -7,9 +6,9 @@ function percol_select_history() {
     CURSOR=$#BUFFER         # move cursor
     zle -R -c               # refresh
 }
-if exists percol; then
-    zle -N percol_select_history
-    bindkey '^R' percol_select_history
-else
-  pip install percol
-fi
+
+##  if ! exists percol; then
+##    pip install percol
+##  fi
+zle -N percol_select_history
+bindkey '^R' percol_select_history

@@ -107,36 +107,36 @@ local on_attach = function(client, bufnr)
     end
 
     -- Displays hover information about the symbol under the cursor
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts("Displays hover information"))
+    vim.keymap.set('n', '<leader>gK', vim.lsp.buf.hover, bufopts("Displays hover information"))
 
     -- Jump to the definition
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts("Go to definition"))
+    vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, bufopts("Go to definition"))
 
     -- Jump to declaration
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts("Go to declaration"))
+    vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, bufopts("Go to declaration"))
 
     -- Lists all the implementations for the symbol under the cursor
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts("All implementations"))
+    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, bufopts("All implementations"))
 
     -- Jumps to the definition of the type symbol
-    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, bufopts("Go to definition symbol"))
+    vim.keymap.set('n', '<leader>go', vim.lsp.buf.type_definition, bufopts("Go to definition symbol"))
 
     -- Lists all the references
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts("All references"))
+    vim.keymap.set('n', '<ledaer>gr', vim.lsp.buf.references, bufopts("All references"))
 
-    vim.keymap.set('n', '<leader>l', function()
+    vim.keymap.set('n', '<leader>gl', function()
         vim.lsp.buf.format { async = true }
     end, bufopts("formatting"))
 
     -- Displays a function's signature information
-    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts("signature"))
+    vim.keymap.set('n', '<leader>gs', vim.lsp.buf.signature_help, bufopts("signature"))
 
     -- Renames all references to the symbol under the cursor
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.rename, bufopts("rename"))
+    vim.keymap.set('n', '<leader>gwr', vim.lsp.buf.rename, bufopts("rename"))
 
     -- Selects a cmde action available at the current cursor position
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.code_action, bufopts("code actions"))
-    vim.keymap.set('v', '<leader>wq', vim.lsp.buf.range_code_action, bufopts("range code actions"))
+    vim.keymap.set('n', '<leader>gwa', vim.lsp.buf.code_action, bufopts("code actions"))
+    vim.keymap.set('v', '<leader>gwq', vim.lsp.buf.range_code_action, bufopts("range code actions"))
 end
 
 -- Show diagnostics in a floating window
