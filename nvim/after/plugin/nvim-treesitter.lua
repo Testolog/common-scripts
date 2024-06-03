@@ -8,4 +8,4 @@ treesitter.setup({
     },
 })
 aerial.setup({})
-vim.keymap.set("n", "<leader>ts", "<cmd>AerialToggle left<CR>")
+vim.keymap.set("n", "<leader>ts", "<cmd>AerialToggle left<CR>", { desc = "toggle current structure" })

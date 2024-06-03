@@ -1,4 +1,3 @@
-vim.keymap.set("n", "<leader>lg", vim.cmd.LazyGit, { desc = "LazyGit" })
 local gitsigns = require("gitsigns")
 gitsigns.setup {
     signs                             = {
@@ -9,7 +8,7 @@ gitsigns.setup {
         changedelete = { text = '~' },
         untracked    = { text = '┆' },
     },
-    signcolumn                        = true, -- Toggle with `:Gitsigns toggle_signs`
+    signcolumn                        = true,  -- Toggle with `:Gitsigns toggle_signs`
     numhl                             = false, -- Toggle with `:Gitsigns toggle_numhl`
     linehl                            = false, -- Toggle with `:Gitsigns toggle_linehl`
     word_diff                         = false, -- Toggle with `:Gitsigns toggle_word_diff`
@@ -32,7 +31,7 @@ gitsigns.setup {
     },
     sign_priority                     = 6,
     update_debounce                   = 100,
-    status_formatter                  = nil, -- Use default
+    status_formatter                  = nil,   -- Use default
     max_file_length                   = 40000, -- Disable if file is longer than this (in lines)
     preview_config                    = {
         -- Options passed to nvim_open_win
@@ -43,9 +42,9 @@ gitsigns.setup {
         col = 1
     },
 }
-vim.keymap.set("n", "<leader>sd", gitsigns.diffthis, { desc = "difference this" })
-vim.keymap.set("n", "<leader>sh", gitsigns.stage_hunk, { desc = "stage hunk" })
-vim.keymap.set("n", "<leader>shr", gitsigns.reset_hunk, { desc = "resut hunk" })
-vim.keymap.set("n", "<leader>stb", gitsigns.toggle_current_line_blame, { desc = "toggle current line blame" })
-vim.keymap.set("n", "<leader>sph", gitsigns.preview_hunk, { desc = "show changes with git" })
-
+vim.keymap.set("n", "<leader>gsd", gitsigns.diffthis, { desc = "git show difference this" })
+vim.keymap.set("n", "<leader>gsc", gitsigns.preview_hunk, { desc = "git show changes with" })
+vim.keymap.set("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "git stage hunk" })
+vim.keymap.set("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "git resut hunk" })
+vim.keymap.set("n", "<leader>tgb", gitsigns.toggle_current_line_blame, { desc = "toggle git current line blame" })
+vim.keymap.set("n", "<leader>gl", vim.cmd.LazyGit, { desc = "git lazy" })

@@ -1,7 +1,11 @@
-require('mason').setup({})
+local mason = require('mason')
 local lspconfig = require('lspconfig')
 local cmp = require('cmp')
+local cmp_nvim_lsp = require('cmp_nvim_lsp')
 local luasnip = require('luasnip')
+local mason_lspconfig = require("mason-lspconfig")
+
+
 local function border(hl_name)
     return {
         { "╭", hl_name },
@@ -14,17 +18,43 @@ local function border(hl_name)
         { "│", hl_name },
     }
 end
+
+local function bufopts(desc, bufnr)
+    return { desc = desc, noremap = true, silent = true, buffer = bufnr }
+end
+
+local on_attach = function(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    vim.keymap.set('n', '<leader>shi', vim.lsp.buf.hover, bufopts("show hover information", bufnr))
+    vim.keymap.set('n', '<leader>sai', vim.lsp.buf.implementation, bufopts("show all implementations", bufnr))
+    vim.keymap.set('n', '<ledaer>sar', vim.lsp.buf.references, bufopts("show all references", bufnr))
+    vim.keymap.set('n', '<leader>lgd', vim.lsp.buf.definition, bufopts("Go to definition", bufnr))
+    vim.keymap.set('n', '<leader>lgD', vim.lsp.buf.declaration, bufopts("Go to declaration", bufnr))
+    vim.keymap.set('n', '<leader>lgs', vim.lsp.buf.type_definition, bufopts("Go to definition symbol", bufnr))
+    vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format { async = true } end, bufopts("formatting", bufnr))
+    vim.keymap.set('n', '<leader>lss', vimdlsp.buf.signature_help, bufopts("show signature", bufnr))
+    vim.keymap.set('n', '<leader>lwr', vim.lsp.buf.rename, bufopts("rename", bufnr))
+    vim.keymap.set('n', '<leader>sdm', function(cfg)
+        return vim.diagnostic.open_float(cfg, { focus = true, scope = "cursor" })
+    end, bufopts("show diagnostics message", bufnr))
+
+    vim.keymap.set('n', '<leader>sdp', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics", bufnr))
+    vim.keymap.set('n', '<leader>sdn', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics", bufnr))
+    vim.keymap.set('n', '<leader>lwa', vim.lsp.buf.code_action, bufopts("code actions", bufnr))
+    vim.keymap.set('v', '<leader>lwr', vim.lsp.buf.range_code_action, bufopts("range code actions", bufnr))
+end
+
+local select_opts = { behavior = cmp.SelectBehavior.Select }
 local lsp_defaults = lspconfig.util.default_config
 
 lsp_defaults.capabilities = vim.tbl_deep_extend(
     'force',
     lsp_defaults.capabilities,
-    require('cmp_nvim_lsp').default_capabilities()
+    cmp_nvim_lsp.default_capabilities()
 )
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-
-local select_opts = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
     snippet = {
@@ -91,69 +121,63 @@ vim.diagnostic.config({
         source = 'always',
     },
 })
+
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
     vim.lsp.handlers.hover,
     { border = border('rounded') }
+)
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Enable underline, use default values
+        underline = true,
+        -- Enable virtual text, override spacing to 4
+        virtual_text = {
+            spacing = 4,
+        },
+        -- Use a function to dynamically turn signs off
+        -- and on, using buffer local variables
+        signs = function(namespace, bufnr)
+            return vim.b[bufnr].show_signs == true
+        end,
+        -- Disable a feature
+        update_in_insert = false,
+    }
 )
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
     vim.lsp.handlers.signature_help,
     { border = border('rounded') }
 )
-local on_attach = function(client, bufnr)
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    local bufopts = function(desc)
-        return { desc = desc, noremap = true, silent = true, buffer = bufnr }
-    end
 
-    -- Displays hover information about the symbol under the cursor
-    vim.keymap.set('n', '<leader>gK', vim.lsp.buf.hover, bufopts("Displays hover information"))
+--Issue with it, because masson install this lsp into venv and not for active python
+lspconfig.pyright.setup({
+    settings = {
+        pyright = {
+            disableOrganizeImports = true,
+        },
+        python = {
+            analysis = {
+                ignore = { '*' },
+            },
+        },
+    },
+    on_attach = on_attach
+})
+lspconfig.ruff_lsp.setup({
+    settings = {
+        ruff_lsp = {
+            server_capabilities = {
+                hoverProvider = false
+            }
+        }
+    },
+    on_attach = on_attach
+})
 
-    -- Jump to the definition
-    vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, bufopts("Go to definition"))
-
-    -- Jump to declaration
-    vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, bufopts("Go to declaration"))
-
-    -- Lists all the implementations for the symbol under the cursor
-    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, bufopts("All implementations"))
-
-    -- Jumps to the definition of the type symbol
-    vim.keymap.set('n', '<leader>go', vim.lsp.buf.type_definition, bufopts("Go to definition symbol"))
-
-    -- Lists all the references
-    vim.keymap.set('n', '<ledaer>gr', vim.lsp.buf.references, bufopts("All references"))
-
-    vim.keymap.set('n', '<leader>gl', function()
-        vim.lsp.buf.format { async = true }
-    end, bufopts("formatting"))
-
-    -- Displays a function's signature information
-    vim.keymap.set('n', '<leader>gs', vim.lsp.buf.signature_help, bufopts("signature"))
-
-    -- Renames all references to the symbol under the cursor
-    vim.keymap.set('n', '<leader>gwr', vim.lsp.buf.rename, bufopts("rename"))
-
-    -- Selects a cmde action available at the current cursor position
-    -- Show diagnostics in a floating window
-    vim.keymap.set('n', '<leader>dv', function(cfg)
-        return vim.diagnostic.open_float(cfg, { focus = true, scope = "cursor" })
-    end, bufopts("diagnostics"))
-
-    ---- Move to the previous diagnostic
-    vim.keymap.set('n', '<leader>dp', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics"))
-
-    ---- Move to the next diagnostic
-    vim.keymap.set('n', '<leader>dn', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics"))
-    vim.keymap.set('n', '<leader>gwa', vim.lsp.buf.code_action, bufopts("code actions"))
-    vim.keymap.set('v', '<leader>gwq', vim.lsp.buf.range_code_action, bufopts("range code actions"))
-end
-
-require("mason-lspconfig").setup({})
---  require("lspconfig").pyright.setup({ on_attach = on_attach })
---  require("lspconfig").lua_ls.setup({ on_attach = on_attach })
-
-require("mason-lspconfig").setup_handlers {
+mason.setup({})
+mason_lspconfig.setup({})
+mason_lspconfig.setup_handlers {
     function(server_name) -- default handler (optional)
         lspconfig[server_name].setup({ on_attach = on_attach })
     end,

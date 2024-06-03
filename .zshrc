@@ -20,6 +20,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $COMMON_SCRIPT/init.sh
 source <(fzf --zsh)
+eval "$(pyenv init -)"
 
 NEW_LINE=$'\n'
 GIT_PROM='%{$fg[green]%}%c $(git_prompt_info)%{$reset_color%}'
