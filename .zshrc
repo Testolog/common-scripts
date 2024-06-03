@@ -70,7 +70,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-source $HOME/common-scripts/env.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -97,6 +96,5 @@ source $HOME/common-scripts/env.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source $HOME/common-scripts/alias.sh
 
 
