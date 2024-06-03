@@ -16,8 +16,8 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 PROMPT="%{$fg[yellow]%}λ %{$fg[green]%}%c $(git_prompt_info)%{$reset_color%} %{$fg[yellow]%}→%{$reset_color%} "
-if [ -f $HOME/env.sh ]; then
- echo "load env.sh"
- source $HOME/env.sh
+if [ -f $HOME/${USER}_env.sh ]; then
+ echo "load ${USER}_env.sh"
+ source $HOME/${USER}_env.sh
 fi
 

@@ -4,10 +4,6 @@ NOT_PROVIDED_CONN_SETTINGS=120
 CONN_FAILED=3
 NOT_EXISTS_QUERY_FILE=2
 
-if [[ -n ~/env.sh ]]; then
-  # shellcheck disable=SC1090
-  source ~/env.sh
-fi
 # shellcheck source=../logging.sh
 source "${COMMON_SCRIPTS}"/logging.sh
 
@@ -30,15 +26,14 @@ function ssh_presto_client() {
   local result_path=$2
   local query_file_name=$(basename ${query_path} | cut -f1 -d.)
   local result_file_name=$(date '+%Y_%d_%m_%H_%M_%S').csv
-  if [[ -n result_path ]]; then
-    mkdir -p $(dirname $(dirname ${query_path}))/result/${query_file_name}
-    result_path=$(dirname $(dirname ${query_path}))/result/${query_file_name}/${result_file_name}
+  if [[ -n $result_path ]]; then
+    mkdir -p $(dirname $(dirname "${query_path}"))/result/"$query_file_name"
+    result_path=$(dirname $(dirname "${query_path}"))/result/$query_file_name/${result_file_name}
   fi
   local remote_query_path=/tmp/${query_file_name}
   local remote_out_path=/tmp/${result_file_name}
   info "check connection to remote host"
-  if ! remote_execute "ls" > /dev/null 2>&1
-  then
+  if ! remote_execute "ls" >/dev/null 2>&1; then
     error "connection was failed"
     exit ${CONN_FAILED}
   fi
