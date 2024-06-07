@@ -1,5 +1,4 @@
-local gitsigns = require("gitsigns")
-gitsigns.setup {
+require("gitsigns").setup {
     signs                             = {
         add          = { text = '┃' },
         change       = { text = '┃' },
@@ -42,9 +41,4 @@ gitsigns.setup {
         col = 1
     },
 }
-vim.keymap.set("n", "<leader>gsd", gitsigns.diffthis, { desc = "git show difference this" })
-vim.keymap.set("n", "<leader>gsc", gitsigns.preview_hunk, { desc = "git show changes with" })
-vim.keymap.set("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "git stage hunk" })
-vim.keymap.set("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "git resut hunk" })
-vim.keymap.set("n", "<leader>tgb", gitsigns.toggle_current_line_blame, { desc = "toggle git current line blame" })
-vim.keymap.set("n", "<leader>gl", vim.cmd.LazyGit, { desc = "git lazy" })
+

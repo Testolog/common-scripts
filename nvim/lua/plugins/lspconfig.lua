@@ -5,7 +5,6 @@ local cmp_nvim_lsp = require('cmp_nvim_lsp')
 local luasnip = require('luasnip')
 local mason_lspconfig = require("mason-lspconfig")
 
-
 local function border(hl_name)
     return {
         { "╭", hl_name },
@@ -19,30 +18,9 @@ local function border(hl_name)
     }
 end
 
-local function bufopts(desc, bufnr)
-    return { desc = desc, noremap = true, silent = true, buffer = bufnr }
-end
 
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    vim.keymap.set('n', '<leader>shi', vim.lsp.buf.hover, bufopts("show hover information", bufnr))
-    vim.keymap.set('n', '<leader>sai', vim.lsp.buf.implementation, bufopts("show all implementations", bufnr))
-    vim.keymap.set('n', '<ledaer>sar', vim.lsp.buf.references, bufopts("show all references", bufnr))
-    vim.keymap.set('n', '<leader>lgd', vim.lsp.buf.definition, bufopts("Go to definition", bufnr))
-    vim.keymap.set('n', '<leader>lgD', vim.lsp.buf.declaration, bufopts("Go to declaration", bufnr))
-    vim.keymap.set('n', '<leader>lgs', vim.lsp.buf.type_definition, bufopts("Go to definition symbol", bufnr))
-    vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format { async = true } end, bufopts("formatting", bufnr))
-    vim.keymap.set('n', '<leader>lss', vimdlsp.buf.signature_help, bufopts("show signature", bufnr))
-    vim.keymap.set('n', '<leader>lwr', vim.lsp.buf.rename, bufopts("rename", bufnr))
-    vim.keymap.set('n', '<leader>sdm', function(cfg)
-        return vim.diagnostic.open_float(cfg, { focus = true, scope = "cursor" })
-    end, bufopts("show diagnostics message", bufnr))
-
-    vim.keymap.set('n', '<leader>sdp', vim.lsp.diagnostic.goto_prev, bufopts("prev diagnostics", bufnr))
-    vim.keymap.set('n', '<leader>sdn', vim.lsp.diagnostic.goto_next, bufopts("next diagnostics", bufnr))
-    vim.keymap.set('n', '<leader>lwa', vim.lsp.buf.code_action, bufopts("code actions", bufnr))
-    vim.keymap.set('v', '<leader>lwr', vim.lsp.buf.range_code_action, bufopts("range code actions", bufnr))
 end
 
 local select_opts = { behavior = cmp.SelectBehavior.Select }
@@ -152,26 +130,26 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 
 --Issue with it, because masson install this lsp into venv and not for active python
 lspconfig.pyright.setup({
-    settings = {
-        pyright = {
-            disableOrganizeImports = true,
-        },
-        python = {
-            analysis = {
-                ignore = { '*' },
-            },
-        },
-    },
+    --      settings = {
+    --          pyright = {
+    --              disableOrganizeImports = true,
+    --          },
+    --          python = {
+    --              analysis = {
+    --                  ignore = { '*' },
+    --              },
+    --          },
+    --      },
     on_attach = on_attach
 })
 lspconfig.ruff_lsp.setup({
-    settings = {
-        ruff_lsp = {
-            server_capabilities = {
-                hoverProvider = false
-            }
-        }
-    },
+    --      settings = {
+    --          ruff_lsp = {
+    --              server_capabilities = {
+    --                  hoverProvider = false
+    --              }
+    --          }
+    --      },
     on_attach = on_attach
 })
 

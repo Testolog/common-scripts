@@ -29,7 +29,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
-
-vim.keymap.set("n", "<leader>pe", vim.cmd.Ex, { desc = "file explorer " })
-vim.keymap.set("v", "<C-S-DOWN>", ":m '>+1<CR>gv=gv", { desc = "move selected line down" })
-vim.keymap.set("v", "<C-S-UP>", ":m '<-2<CR>gv=gv", { desc = "move selected line up" })
+vim.g.tmux_navigator_no_mappings = 1
+vim.g.tmux_navigator_save_on_switch = 2
+vim.g.neovide_input_macos_alt_is_meta = true

@@ -1,4 +1,4 @@
-opts = {
+return {
   flavour = "macchiato",
   transparent_background = true,
   styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
@@ -16,4 +16,3 @@ opts = {
         operators = {},
     },
 }
-return opts
