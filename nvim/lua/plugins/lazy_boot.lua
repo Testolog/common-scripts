@@ -110,7 +110,7 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         config = function()
-            require("plugins.git-integration")
+            require("plugins.git_integration")
         end
     },
     {
@@ -121,11 +121,16 @@ return {
         config = function()
             require("aerial").setup({
                 layout = {
-                    max_width = { 40, 0.2 },
-                    width = nil,
-                    min_width = 20,
+                    width = 0.3,
                 }
             })
         end
-    }
+    },
+    { "ryanoasis/vim-devicons" },
+    {
+        "nvim-tree/nvim-tree.lua",
+        config = function()
+            require("nvim-tree").setup({})
+        end
+    },
 }

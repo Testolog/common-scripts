@@ -130,26 +130,26 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 
 --Issue with it, because masson install this lsp into venv and not for active python
 lspconfig.pyright.setup({
-    --      settings = {
-    --          pyright = {
-    --              disableOrganizeImports = true,
-    --          },
+          settings = {
+              pyright = {
+                  disableOrganizeImports = true,
+              },
     --          python = {
     --              analysis = {
     --                  ignore = { '*' },
     --              },
     --          },
-    --      },
+          },
     on_attach = on_attach
 })
 lspconfig.ruff_lsp.setup({
-    --      settings = {
-    --          ruff_lsp = {
-    --              server_capabilities = {
-    --                  hoverProvider = false
-    --              }
-    --          }
-    --      },
+    settings = {
+        ruff_lsp = {
+            server_capabilities = {
+                hoverProvider = false
+            }
+        }
+    },
     on_attach = on_attach
 })
 

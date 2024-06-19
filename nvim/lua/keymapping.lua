@@ -6,7 +6,6 @@ local harpoon = require("harpoon")
 local function grep()
     builtin.grep_string({ search = vim.fn.input("Find: ") });
 end
-
 local leader_ops = {
     mode = "n",
     prefix = "<leader>",
@@ -59,15 +58,16 @@ local leader_map = {
         l = { vim.cmd.LazyGit, "git lazy" }
     },
     t = {
-        gb = { gitsigns.toggle_current_line_blame, "toggle git current line blame" },
+        b = { gitsigns.toggle_current_line_blame, "toggle git current line blame" },
         s = { function() vim.cmd.AerialToggle("left") end, "toggle current structure" },
-        e = { vim.cmd.UndotreeToggle, "toggle undo tree" }
+        u = { vim.cmd.UndotreeToggle, "toggle undo tree" },
+        t = { vim.cmd.NvimTreeToggle, "toggle nvim tree"}
     },
-    a = { function() harpoon:list():select(1) end, "append to harpoon" },
-    e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },
-    p = {
-        e = { vim.cmd.Ex, "file explorer" }
-    },
+    -- a = { function() harpoon:list():select(1) end, "append to harpoon" },
+    -- e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },
+  --p = {
+  --    e = { vim.cmd.Ex, "file explorer" }
+  --},
     s = {
         hi = { vim.lsp.buf.hover, "show hover information", },
         ai = { vim.lsp.buf.implementation, "show all implementations", },
