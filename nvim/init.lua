@@ -1,11 +1,10 @@
-local general = require("general")
 
+local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git",
-         "clone",
+        "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
         "--branch=stable", -- latest stable release
@@ -15,6 +14,9 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+local general = require("general")
 require("lazy").setup(general.plugins)
 require("keymapping")
+
 vim.cmd.colorscheme(general.colorschema)
+vim.cmd.source(vimrc)

@@ -23,7 +23,8 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
-vim.opt.guifont = "NerdIcons"
+vim.g.have_nerd_font = true
+vim.opt.guifont = "Nerd Font"
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8

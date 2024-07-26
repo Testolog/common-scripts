@@ -126,7 +126,7 @@ return {
             })
         end
     },
-    { "ryanoasis/vim-devicons" },
+    {"nvim-tree/nvim-web-devicons"},
     {
         "nvim-tree/nvim-tree.lua",
         config = function()

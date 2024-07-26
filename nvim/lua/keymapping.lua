@@ -51,10 +51,13 @@ local leader_map = {
         s = { grep, "find by grep" },
     },
     g = {
-        sd = { gitsigns.diffthis, "git show difference this" },
-        sc = { gitsigns.preview_hunk, "git show changes with" },
-        hs = { gitsigns.stage_hunk, "git stage hunk" },
-        hr = { gitsigns.reset_hunk, "git resut hunk" },
+        t = { gitsigns.diffthis, "git show difference this" },
+        d = { vim.lsp.buf.definition, "Go to definition", },
+        D = { vim.lsp.buf.declaration, "Go to declaration", },
+        s = { vim.lsp.buf.type_definition, "Go to definition symbol", },
+        gc = { gitsigns.preview_hunk, "git show changes with" },
+        gs = { gitsigns.stage_hunk, "git stage hunk" },
+        gr = { gitsigns.reset_hunk, "git resut hunk" },
         l = { vim.cmd.LazyGit, "git lazy" }
     },
     t = {
@@ -63,23 +66,17 @@ local leader_map = {
         u = { vim.cmd.UndotreeToggle, "toggle undo tree" },
         t = { vim.cmd.NvimTreeToggle, "toggle nvim tree"}
     },
-    -- a = { function() harpoon:list():select(1) end, "append to harpoon" },
-    -- e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },
-  --p = {
-  --    e = { vim.cmd.Ex, "file explorer" }
-  --},
+    a = { function() harpoon:list():add(1) end, "append to harpoon" },
+    e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },
     s = {
-        hi = { vim.lsp.buf.hover, "show hover information", },
-        ai = { vim.lsp.buf.implementation, "show all implementations", },
+        i = { vim.lsp.buf.hover, "show hover information", },
+        I = { vim.lsp.buf.implementation, "show all implementations", },
         ar = { vim.lsp.buf.references, "show all references", },
         dm = { function(cfg) return vim.diagnostic.open_float(cfg, { focus = true, scope = "cursor" }) end, "show diagnostics message", },
     },
     l = {
-        gd = { vim.lsp.buf.definition, "Go to definition", },
-        gD = { vim.lsp.buf.declaration, "Go to declaration", },
-        gs = { vim.lsp.buf.type_definition, "Go to definition symbol", },
-        ss = { vim.lsp.buf.signature_help, "show signature", },
-        wr = { vim.lsp.buf.rename, "rename", },
+        s = { vim.lsp.buf.signature_help, "show signature", },
+        r = { vim.lsp.buf.rename, "rename", },
         f = { function() vim.lsp.buf.format { async = true } end, "formatting", },
     },
 }
