@@ -62,11 +62,11 @@ local leader_map = {
     },
     t = {
         b = { gitsigns.toggle_current_line_blame, "toggle git current line blame" },
-        s = { function() vim.cmd.AerialToggle("left") end, "toggle current structure" },
+        s = { function() vim.cmd.AerialToggle("right") end, "toggle current structure" },
         u = { vim.cmd.UndotreeToggle, "toggle undo tree" },
         t = { vim.cmd.NvimTreeToggle, "toggle nvim tree"}
     },
-    a = { function() harpoon:list():add(1) end, "append to harpoon" },
+    a = { function() harpoon:list():add() end, "append to harpoon" },
     e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },
     s = {
         i = { vim.lsp.buf.hover, "show hover information", },
