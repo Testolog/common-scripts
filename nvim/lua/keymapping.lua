@@ -2,7 +2,7 @@ local builtin = require("telescope.builtin")
 local gitsigns = require("gitsigns")
 local which_key = require("which-key")
 local harpoon = require("harpoon")
-
+local trouble = require("trouble")
 local function grep()
     builtin.grep_string({ search = vim.fn.input("Find: ") });
 end
@@ -64,7 +64,23 @@ local leader_map = {
         b = { gitsigns.toggle_current_line_blame, "toggle git current line blame" },
         s = { function() vim.cmd.AerialToggle("right") end, "toggle current structure" },
         u = { vim.cmd.UndotreeToggle, "toggle undo tree" },
-        t = { vim.cmd.NvimTreeToggle, "toggle nvim tree"}
+        t = { vim.cmd.NvimTreeToggle, "toggle nvim tree" },
+        e = { function()
+            local t_opts = {
+                mode = "diagnostics",
+                win = {
+                    type = "split",
+                    relative = "editor",
+                    border = "rounded",
+                    title = "Preview",
+                    title_pos = "center",
+                    position = "right",
+                    size = { width = 0.3, height = 0.3 },
+                    zindex = 200,
+                },
+            }
+            trouble.toggle(t_opts)
+        end, "toggle trouble" }
     },
     a = { function() harpoon:list():add() end, "append to harpoon" },
     e = { function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, "list tabs" },

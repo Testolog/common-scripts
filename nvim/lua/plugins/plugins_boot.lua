@@ -34,10 +34,11 @@ return {
         opts = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup({
-                ensure_installed = { "c", "lua", "vim", "vimdoc", "python", "query" },
+                ensure_installed = { "c", "lua", "vim", "vimdoc", "python", "query", "markdown" },
                 auto_install = true,
                 highlight = {
-                    enable = true
+                    enable = true,
+                    disable = "help"
                 },
             })
         end,
@@ -126,11 +127,13 @@ return {
             })
         end
     },
-    {"nvim-tree/nvim-web-devicons"},
+    { "nvim-tree/nvim-web-devicons" },
     {
         "nvim-tree/nvim-tree.lua",
         config = function()
             require("nvim-tree").setup({})
         end
     },
+    {"folke/trouble.nvim", opts = {}, cmd = "Trouble",}
+
 }
