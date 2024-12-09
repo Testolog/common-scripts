@@ -1,0 +1,50 @@
+"" Source your .vimrc
+"source ~/.vimrc
+"
+set clipboard+=unnamed
+set clipboard+=ideaput
+set scrolloff=5
+set history=200
+set virtualedit+=onemore
+"set staff for mode
+set incsearch
+set ideajoin "big J for join
+set number relativenumber
+set showmode
+set ideamarks
+set idearefactormode=keep
+set multicursor
+"set NERDTree
+"navigation
+let mapleader=" "
+nmap [[ <Action>(MethodUp)
+nmap ]] <Action>(MethodDown)
+"nmap > <Action>((Move)
+"nmap < <Action>(
+nmap ]q <Action>(GotoNextElementUnderCaretUsage)
+nmap [q <Action>(GotoPrevElementUnderCaretUsage)
+"refactoring sub func
+nmap <leader>lr <Action>(RenameElement)
+nmap <leader>lm <Action>(Move)
+nmap <leader>ls <Action>(ChangeSignature)
+nmap <leader>lv <Action>(IntroduceVariable)
+nmap <leader>lc <Action>(IntroduceConstant)
+nmap <leader>lif <Action>(IntroduceField)
+
+nmap <leader>lf <Action>(ReformatCode)
+nmap <leader>gd <Action>(GotoDeclaration)
+
+nmap <leader>sau <Action>(ShowUsages)
+nmap <leader>x <Action>(HideAllWindows)
+nmap <leader>sfu <Action>(FindUsages)
+nmap <leader>tp <Action>(ActivateProjectToolWindow)
+nmap <leader>ts <Action>(ActivateStructureToolWindow)
+
+"nmap <leader>gl <Action>(ReformatCode)
+nmap <leader>grf :!ruff check --fix % <CR>
+nmap <leader>grl :!ruff format % <CR>
+nmap <leader>grc :!ruff check % <CR>
+
+nmap <leader>ds <Action>(SynchronizeCurrentFile)
+
+"ShowIntentionActions
