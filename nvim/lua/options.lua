@@ -32,6 +32,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 vim.opt.colorcolumn = "80"
 vim.g.tmux_navigator_no_mappings = 1

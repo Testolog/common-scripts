@@ -4,7 +4,7 @@
 source $COMMON_SCRIPT/utility.sh
 source $COMMON_SCRIPT/logging.sh
 
-requirment_tool=( fzf )
+requirment_tool=( fzf pyenv kubectl docker rbenv)
 #   for t in ${requirment_tool[@]}; do
 #       if [ !exists $t ];
 #           brew install $t

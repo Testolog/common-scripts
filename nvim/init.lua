@@ -1,5 +1,6 @@
-
 local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
+
+vim.cmd.source(vimrc)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -14,9 +15,14 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-local general = require("general")
-require("lazy").setup(general.plugins)
-require("keymapping")
+require("options")
 
-vim.cmd.colorscheme(general.colorschema)
-vim.cmd.source(vimrc)
+require("lazy").setup("plugins", {
+    change_detection = {
+        enabled = true, -- automatically check for config file changes and reload the ui
+        notify = false, -- turn off notifications whenever plugin changes are made
+    },
+})
+local general = require("general")
+require("keymapping")
+vim.cmd.colorscheme(general.collorschema)

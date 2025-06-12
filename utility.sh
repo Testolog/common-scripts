@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+source ~/common-scripts/logging.sh
+verbosity=4
 
 function exists { which $1 &> /dev/null }
 
@@ -51,6 +53,41 @@ function md2pdf() {
     exit 1
   fi
   markdown $1 | htmldoc --cont --headfootsize 8.0 --linkcolor blue --linkstyle plain --format pdf14 - >$2
+}
+
+function use() {
+    function show(){
+        echo "availible profiles:" 
+        ls -1 $profiles | grep ".*\\.sh" | cut -d "." -f 1
+    }
+    name=$1
+    profiles=~/profiles
+    if [ ! -d $profiles ]; then
+        echo "profiles dir don't exists"
+        return 1
+    fi
+    if [[ -z $name ]]; then
+        echo "require a existsed env profile"
+        size=$(ls -1 $profiles | grep ".*\\.sh$" | wc -l)
+        if [ 0 -eq $size ]; then
+            echo "no profile existed"
+            return 1
+        fi
+        show
+        return 0
+    fi
+    if [ ! -e "$profiles/$name.sh" ]; then
+        echo " '$name' doesn't exists"
+        size=$(ls -1 $profiles | grep ".*\\.sh$" | wc -l)
+        if [ 0 -eq $size ]; then
+            echo "no profile existed"
+            return 1
+        fi
+        show
+        return 0
+    fi
+    echo "source profile $name"
+    source "$profiles/$name.sh" 
 }
 
 function vim_new_project() {

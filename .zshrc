@@ -14,7 +14,7 @@ export UPDATE_ZSH_DAYS=13
 ENABLE_CORRECTION="true"
 
 plugins=(
-  init colored-man colorize pip python brew osx zsh-syntax-highlighting
+   colorize pip python brew
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -40,3 +40,4 @@ if [ -f $HOME/${USER}_env.sh ]; then
  echo "load ${USER}_env.sh"
  source $HOME/${USER}_env.sh
 fi
+export NODE_EXTRA_CA_CERTS="/Library/Application Support/Playtika Corp. IT/Certs/Playtika-SCA.pem"
