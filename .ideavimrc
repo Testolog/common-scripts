@@ -30,13 +30,14 @@ nmap <leader>ls <Action>(ChangeSignature)
 nmap <leader>lv <Action>(IntroduceVariable)
 nmap <leader>lc <Action>(IntroduceConstant)
 nmap <leader>lif <Action>(IntroduceField)
+nmap <leader>fe <Action>(SearchEverywhere)
 
 nmap <leader>lf <Action>(ReformatCode)
 nmap <leader>gd <Action>(GotoDeclaration)
 
-nmap <leader>sau <Action>(ShowUsages)
+nmap <leader>sar <Action>(ShowUsages)
 nmap <leader>x <Action>(HideAllWindows)
-nmap <leader>sfu <Action>(FindUsages)
+nmap <leader>far <Action>(FindUsages)
 nmap <leader>tp <Action>(ActivateProjectToolWindow)
 nmap <leader>ts <Action>(ActivateStructureToolWindow)
 

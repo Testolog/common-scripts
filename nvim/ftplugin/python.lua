@@ -4,11 +4,11 @@ lspconfig.pyright.setup({
         pyright = {
             disableOrganizeImports = true,
         },
-        --          python = {
-        --              analysis = {
-        --                  ignore = { '*' },
-        --              },
-        --          },
+        python = {
+            analysis = {
+                ignore = { '*' },
+            },
+        },
     },
 })
 lspconfig.ruff.setup({

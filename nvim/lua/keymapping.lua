@@ -1,4 +1,5 @@
 local builtin = require("telescope.builtin")
+local themas = require("telescope.themes")
 local gitsigns = require("gitsigns")
 local which_key = require("which-key")
 local harpoon = require("harpoon")
@@ -17,13 +18,30 @@ local v_map = {
     { "<C-S-DOWN>", ":m '>+1<CR>gv=gv", desc = "move selected line down", expr = false, mode = "v", nowait = false, remap = false },
     { "<C-S-UP>",   ":m '<-2<CR>gv=gv", desc = "move selected line up",   expr = false, mode = "v", nowait = false, remap = false },
 }
-
+local horizontal_layout = function(fun)
+    local setup = {
+        layout_strategy = 'horizontal',
+        layout_config = {
+            prompt_position = 'top',
+            width = 0.8,
+            height = 0.8
+        },
+        sorting_strategy = 'ascending',
+    }
+    return function()
+        fun(themas.get_dropdown(setup))
+    end
+end
 local leader_map = {
+    { "gs",          ":w | source %<CR>",                          mode = "n", desc = "save source" },
+    --other
+    { "?",           horizontal_layout(builtin.help_tags),         mode = "n", desc = "Help" },
+
     -- f find
     { "<leader>ff",  builtin.find_files,                           mode = "n", desc = "find files" },
     { "<leader>fg",  builtin.git_files,                            mode = "n", desc = "find in git files" },
     { "<leader>fb",  builtin.buffers,                              mode = "n", desc = "find in buffer" },
-    { "<leader>ft",  builtin.help_tags,                            mode = "n", desc = "find in tags" },
+    { "<leader>fc",  horizontal_layout(builtin.commands),          mode = "n", desc = "find in commands" },
     --{ "<leader>fs",  grep,                                         mode = "n", desc = "find by grep" },
     { "<leader>fs",  builtin.live_grep,                            mode = "n", desc = "find live grep" },
     -- g go/git
@@ -68,6 +86,13 @@ local leader_map = {
         end,
         mode = "n",
         desc = "Maven"
+    },
+    {
+        "<leader>tq",
+        function()
+            require("quicker").toggle({ loclist = true })
+        end,
+        desc = "Toggle quickfix",
     },
     -- harpoon
     {
