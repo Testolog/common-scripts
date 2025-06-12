@@ -41,11 +41,8 @@ return {
         "sotte/presenting.nvim",
         opts = {
             options = {
-                -- The width of the slide buffer.
                 width = 100,
             },
-            -- fill in your options here
-            -- see :help Presenting.config
         },
         cmd = { "Presenting" },
     }

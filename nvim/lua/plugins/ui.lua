@@ -37,7 +37,14 @@ return {
             }
         }
     },
-    { "folke/trouble.nvim",         opts = {},         cmd = "Trouble", },
+    {
+        "folke/trouble.nvim",
+        opts = {},
+        cmd = "Trouble",
+    },
     { "nvim-tree/nvim-web-devicons" },
-    { "rose-pine/neovim",           name = "rose-pine" }
+    {
+        "rose-pine/neovim",
+        name = "rose-pine"
+    }
 }

@@ -23,6 +23,6 @@ require("lazy").setup("plugins", {
         notify = false, -- turn off notifications whenever plugin changes are made
     },
 })
-local general = require("general")
+local main = require("main")
 require("keymapping")
-vim.cmd.colorscheme(general.collorschema)
+vim.cmd.colorscheme(main.collorschema)

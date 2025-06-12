@@ -92,7 +92,16 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
-            require("nvim-tree").setup({})
+            require("nvim-tree").setup({
+                view = {
+                    width = 30,
+                },
+                actions = {
+                    open_file = {
+                        resize_window = false ,
+                    },
+                }
+            })
         end
     },
     { "nvim-dap" },
