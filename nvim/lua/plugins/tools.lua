@@ -92,13 +92,14 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
-            require("nvim-tree").setup({
+            local tree = require("nvim-tree")
+            tree.setup({
                 view = {
-                    width = 30,
+                    width = 30
                 },
                 actions = {
                     open_file = {
-                        resize_window = false ,
+                        resize_window = false,
                     },
                 }
             })

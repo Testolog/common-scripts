@@ -14,8 +14,8 @@ local not_leader_map = {
 }
 
 local v_map = {
-    { "<C-S-DOWN>", ":m '>+1<CR>gv=gv",                   desc = "move selected line down", expr = false, mode = "v", nowait = false, remap = false },
-    { "<C-S-UP>",   ":m '<-2<CR>gv=gv",                   desc = "move selected line up",   expr = false, mode = "v", nowait = false, remap = false },
+    { "<C-S-DOWN>", ":m '>+1<CR>gv=gv", desc = "move selected line down", expr = false, mode = "v", nowait = false, remap = false },
+    { "<C-S-UP>",   ":m '<-2<CR>gv=gv", desc = "move selected line up",   expr = false, mode = "v", nowait = false, remap = false },
 }
 
 local leader_map = {
@@ -61,6 +61,14 @@ local leader_map = {
         mode = "n",
         desc = "toggle trouble"
     },
+    {
+        "<leader>tm",
+        function()
+            vim.cmd.Maven()
+        end,
+        mode = "n",
+        desc = "Maven"
+    },
     -- harpoon
     {
         "<leader>a",
@@ -78,16 +86,29 @@ local leader_map = {
         mode = "n",
         desc = "list tabs"
     }, -- s show
-    { "<leader>si",  vim.lsp.buf.hover,          mode = "n", desc = "show hover information" },
-    { "<leader>sI",  vim.lsp.buf.implementation, mode = "n", desc = "show all implementations" },
-    { "<leader>sar", vim.lsp.buf.references,     mode = "n", desc = "show all references" },
+    { "<leader>si", vim.lsp.buf.hover,          mode = "n", desc = "show hover information" },
+    {
+        "<leader>sI",
+        function(opts)
+            print("asd")
+            vim.lsp.buf.implementation(opts)
+        end,
+        mode = "n",
+        desc = "show all implementations"
+    },
+    {
+        "<leader>sar",
+        vim.lsp.buf.references,
+        mode = "n",
+        desc = "show all references"
+    },
     {
         "<leader>slf",
         function()
             ntree.tree.find_file({ open = true, focus = true, })
         end,
         mode = "n",
-        desc = "show all references"
+        desc = "show location of file"
     },
     {
         "<leader>sdm",
@@ -97,15 +118,7 @@ local leader_map = {
         mode = "n",
         desc = "show diagnostics message"
     },
-    { "<leader>sl", vim.cmd.NERDTreeFind,       mode = "n", "locate file in tree" },
-    {
-        "<leader>sm",
-        function()
-            vim.cmd.Maven()
-        end,
-        mode = "n",
-        desc = "Maven"
-    },
+    { "<leader>sl", vim.cmd.NERDTreeFind,       mode = "n", desc = "locate file in tree" },
     -- l LSP
     { "<leader>ls", vim.lsp.buf.signature_help, mode = "n", desc = "show signature" },
     { "<leader>lr", vim.lsp.buf.rename,         mode = "n", desc = "rename" },
@@ -117,7 +130,14 @@ local leader_map = {
         mode = "n",
         desc = "formatting"
     },
-    { "<leader>la", vim.lsp.buf.code_action, mode = "n", desc = "actions" },
+    {
+        "<leader>la",
+        function(opts)
+            require("tiny-code-action").code_action(opts)
+        end,
+        mode = "n",
+        desc = "actions"
+    },
 }
 which_key.add(leader_map)
 which_key.add(not_leader_map)

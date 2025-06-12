@@ -45,5 +45,18 @@ return {
             },
         },
         cmd = { "Presenting" },
+    },
+    {
+        "j-hui/fidget.nvim",
+        opts = function()
+            require("fidget")
+        end,
+    },
+    {
+        'stevearc/quicker.nvim',
+        event = "FileType qf",
+        ---@module "quicker"
+        ---@type quicker.SetupOptions
+        opts = {},
     }
 }

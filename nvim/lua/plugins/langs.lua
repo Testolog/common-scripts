@@ -17,11 +17,11 @@ local lua = {
 }
 local python = {
 
-
 }
 local java = {
-    { 'nvim-java/nvim-java' }
-
+    {
+        'nvim-java/nvim-java',
+    }
 }
 local ls = {
     common, lua, python, java
