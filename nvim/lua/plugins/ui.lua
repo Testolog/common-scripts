@@ -71,7 +71,6 @@ return {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,
-        ---@type snacks.Config
         opts = {
             -- your configuration comes here
             -- or leave it empty to use the default settings
@@ -81,7 +80,19 @@ return {
             picker = { enabled = true },
             notifier = { enabled = false },
             quickfile = { enabled = true },
+            matcher = {
+                frecency = true
+            }
         },
     },
+    {
+        "rachartier/tiny-inline-diagnostic.nvim",
+        event = "VeryLazy", -- Or `LspAttach`
+        priority = 1001,    -- needs to be loaded in first
+        config = function()
+            require('tiny-inline-diagnostic').setup({preset = "modern"})
+            vim.diagnostic.config({ virtual_text = false  }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+        end
+    }
 
 }

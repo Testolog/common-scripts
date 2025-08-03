@@ -7,6 +7,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export COMMON_SCRIPT="$HOME/common-scripts"
 
 eval "$(rbenv init - zsh)"
+eval "$(pyenv init -)"
 
 DISABLE_AUTO_UPDATE="true"
 
@@ -20,7 +21,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $COMMON_SCRIPT/init.sh
 source <(fzf --zsh)
-eval "$(pyenv init -)"
 
 NEW_LINE=$'\n'
 GIT_PROM='%{$fg[green]%}%c $(git_prompt_info)%{$reset_color%}'
@@ -40,4 +40,3 @@ if [ -f $HOME/${USER}_env.sh ]; then
  echo "load ${USER}_env.sh"
  source $HOME/${USER}_env.sh
 fi
-export NODE_EXTRA_CA_CERTS="/Library/Application Support/Playtika Corp. IT/Certs/Playtika-SCA.pem"

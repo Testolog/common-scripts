@@ -1,5 +1,5 @@
 M = {}
 M.collorschema = "catppuccin"
-require("lsp_config")
 require("languages")
+require("lsp_config")
 return M

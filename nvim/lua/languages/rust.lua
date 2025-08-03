@@ -1,0 +1,12 @@
+-- local common = require("commons")
+-- require("lspconfig").bacon_ls.setup({
+--     init_options = {
+--         updateOnSave = true,
+--         updateOnSaveWaitMillis = 1000,
+--         runBaconInBackground = true,
+--         createBaconPreferencesFile = true
+--     },
+--     on_attach = common.lsp_on_attach
+-- })
+-- vim.g.lazyvim_rust_diagnostics = "bacon-ls"
+require("lspconfig").rust_analyzer.setup({})

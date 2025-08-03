@@ -24,4 +24,10 @@ M.contains = function(table, val)
     return false
 end
 
+vim.filetype.add({
+  pattern = {
+    ['*.jsonc'] = 'json',
+  },
+})
+
 return M

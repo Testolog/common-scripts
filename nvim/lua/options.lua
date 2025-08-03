@@ -30,7 +30,7 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
-
+-- vim.diagnostic.opts.update_in_insert = true
 vim.opt.updatetime = 50
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
