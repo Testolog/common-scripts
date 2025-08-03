@@ -27,6 +27,11 @@ vim.g.have_nerd_font = true
 vim.opt.guifont = "Nerd Font"
 vim.opt.termguicolors = true
 
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")

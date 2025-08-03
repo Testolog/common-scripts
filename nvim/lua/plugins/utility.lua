@@ -20,6 +20,9 @@ return {
             treesitter.setup({
                 ensure_installed = const.treesitter.lang,
                 auto_install = true,
+                sync_install = false,
+                ignore_install = {},
+                modules = {},
                 highlight = {
                     enable = true,
                     disable = "help"

@@ -5,6 +5,9 @@ local trouble = require("trouble")
 local ntree = require("nvim-tree.api")
 local snacks = require("snacks")
 
+local val = 'incorrect'
+print(val)
+
 local not_leader_map = {
     { "<C-h>", vim.cmd.TmuxNavigateLeft,  desc = "tmux move left",  expr = false, nowait = false, remap = false },
     { "<C-j>", vim.cmd.TmuxNavigateDown,  desc = "tmux move down",  expr = false, nowait = false, remap = false },
@@ -157,6 +160,9 @@ local leader_map = {
         mode = "n",
         desc = "actions"
     },
+    -- z
+    { "zR", require("ufo").openAllFolds,  mode = "n", desc = "open all folds" },
+    { "zM", require("ufo").closeAllFolds, mode = "n", desc = "close all folds" }
 }
 which_key.add(leader_map)
 which_key.add(not_leader_map)
