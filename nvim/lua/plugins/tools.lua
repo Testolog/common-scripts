@@ -14,7 +14,6 @@ local cmdline_config = function()
         }),
     })
 end
-local v = 'incrrect'
 return {
     {
         "oclay1st/maven.nvim",
@@ -95,6 +94,15 @@ return {
         config = function()
             local tree = require("nvim-tree")
             tree.setup({
+                renderer = {
+                    group_empty = true,
+                    indent_markers = {
+                        enable = true
+                    }
+                },
+                filters = {
+                    dotfiles = false
+                },
                 view = {
                     width = 30
                 },

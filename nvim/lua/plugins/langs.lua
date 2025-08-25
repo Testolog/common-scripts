@@ -13,7 +13,7 @@ local lua = {
         dependencies = { "rafamadriz/friendly-snippets" },
         version = "2.*",
         build = "make install_jsregexp"
-    },
+    }
 }
 local python = {
 
@@ -23,8 +23,15 @@ local java = {
         'nvim-java/nvim-java',
     }
 }
+
+local rust = {
+    {
+        "mrcjkb/rustaceanvim",
+        lazy = false
+    }
+}
 local ls = {
-    common, lua, python, java
+    common, lua, python, java, rust
 }
 local res = {}
 for _, elm in ipairs(ls) do

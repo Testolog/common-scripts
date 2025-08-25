@@ -6,6 +6,8 @@
 export ZSH="$HOME/.oh-my-zsh"
 export COMMON_SCRIPT="$HOME/common-scripts"
 
+#append logic to install using base package installer
+
 eval "$(rbenv init - zsh)"
 eval "$(pyenv init -)"
 
@@ -15,7 +17,7 @@ export UPDATE_ZSH_DAYS=13
 ENABLE_CORRECTION="true"
 
 plugins=(
-   colorize pip python brew
+   colorize pip python brew 
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -40,3 +42,6 @@ if [ -f $HOME/${USER}_env.sh ]; then
  echo "load ${USER}_env.sh"
  source $HOME/${USER}_env.sh
 fi
+
+[ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
+

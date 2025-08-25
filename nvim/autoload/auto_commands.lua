@@ -10,3 +10,16 @@
 --        vim.cmd("Maven")
 --    end,
 --})
+vim.api.nvim_create_autocmd("InsertLeave", {
+    pattern = "*",
+    callback = function()
+        vim.cmd("w")
+    end
+})
+vim.api.nvim_create_user_command(
+    "JsonFormat",
+    function()
+        vim.cmd("%!jq")
+    end,
+    {}
+)

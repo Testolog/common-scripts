@@ -5,9 +5,6 @@ local trouble = require("trouble")
 local ntree = require("nvim-tree.api")
 local snacks = require("snacks")
 
-local val = 'incorrect'
-print(val)
-
 local not_leader_map = {
     { "<C-h>", vim.cmd.TmuxNavigateLeft,  desc = "tmux move left",  expr = false, nowait = false, remap = false },
     { "<C-j>", vim.cmd.TmuxNavigateDown,  desc = "tmux move down",  expr = false, nowait = false, remap = false },
@@ -30,31 +27,33 @@ local function ivy_picker_layout(fun)
     end
 end
 local leader_map = {
-    { "gs",              ":w | source %<CR>",                          mode = "n",               desc = "save source" },
+    { "gs",             ":w | source %<CR>",                          mode = "n",                     desc = "save source" },
     --other
-    { "?",               ivy_picker_layout(snacks.picker.help),        mode = "n",               desc = "Help" },
-    { "<leader><space>", function() snacks.picker.smart() end,         desc = "Smart Find Files" },
+    { "?",              ivy_picker_layout(snacks.picker.help),        mode = "n",                     desc = "Help" },
+    { "<space><space>", function() snacks.picker.smart() end,         desc = "Smart Find Files" },
+    { "<leader>fk",     ivy_picker_layout(snacks.picker.keymaps),     mode = "n",                     desc = "FindKey" },
     -- f find
-    { "<leader>ff",      ivy_picker_layout(snacks.picker.files),       mode = "n",               desc = "find files" },
-    { "<leader>fg",      ivy_picker_layout(snacks.picker.git_files),   mode = "n",               desc = "find in git files" },
-    { "<leader>fb",      ivy_picker_layout(snacks.picker.buffers),     mode = "n",               desc = "find in buffer" },
-    { "<leader>fc",      ivy_picker_layout(snacks.picker.commands),    mode = "n",               desc = "find in commands" },
-    --{ "<leader>fs",  grep,                                         mode = "n", desc = "find by grep" },
-    { "<leader>fs",      ivy_picker_layout(snacks.picker.grep),        mode = "n",               desc = "find live grep" },
+    { "<leader>ff",     ivy_picker_layout(snacks.picker.files),       mode = "n",                     desc = "find files" },
+    { "<leader>fg",     ivy_picker_layout(snacks.picker.git_files),   mode = "n",                     desc = "find in git files" },
+    { "<leader>fb",     ivy_picker_layout(snacks.picker.buffers),     mode = "n",                     desc = "find in buffer" },
+    { "<leader>fc",     ivy_picker_layout(snacks.picker.commands),    mode = "n",                     desc = "find in commands" },
+    { "<leader>fs",     ivy_picker_layout(snacks.picker.grep),        mode = "n",                     desc = "find live grep" },
     -- g go/git
-    { "<leader>gt",      gitsigns.diffthis,                            mode = "n",               desc = "git show difference this" },
-    { "<leader>gd",      vim.lsp.buf.definition,                       mode = "n",               desc = "Go to definition" },
-    { "<leader>gD",      vim.lsp.buf.declaration,                      mode = "n",               desc = "Go to declaration" },
-    { "<leader>gs",      vim.lsp.buf.type_definition,                  mode = "n",               desc = "Go to definition symbol" },
-    { "<leader>ggc",     gitsigns.preview_hunk,                        mode = "n",               desc = "git show changes with" },
-    { "<leader>ggs",     gitsigns.stage_hunk,                          mode = "n",               desc = "git stage hunk" },
-    { "<leader>ggr",     gitsigns.reset_hunk,                          mode = "n",               desc = "git resut hunk" },
-    { "<leader>gl",      vim.cmd.LazyGit,                              mode = "n",               desc = "git lazy" },
+    { "gld",            snacks.picker.lsp_definitions,                desc = "Goto Definition" },
+    { "glD",            snacks.picker.lsp_declarations,               desc = "Goto Declaration" },
+    { "glr",            snacks.picker.lsp_references,                 nowait = true,                  desc = "References" },
+    { "glI",            snacks.picker.lsp_implementations,            desc = "Goto Implementation" },
+    { "glt",            snacks.picker.lsp_type_definitions,           desc = "Goto T[y]pe Definition" },
+    { "<leader>gt",     gitsigns.diffthis,                            mode = "n",                     desc = "git show difference this" },
+    { "<leader>ggc",    gitsigns.preview_hunk,                        mode = "n",                     desc = "git show changes with" },
+    { "<leader>ggs",    gitsigns.stage_hunk,                          mode = "n",                     desc = "git stage hunk" },
+    { "<leader>ggr",    gitsigns.reset_hunk,                          mode = "n",                     desc = "git resut hunk" },
+    { "<leader>gl",     vim.cmd.LazyGit,                              mode = "n",                     desc = "git lazy" },
     -- t toogle window
-    { "<leader>tb",      gitsigns.toggle_current_line_blame,           mode = "n",               desc = "toggle git current line blame" },
-    { "<leader>ts",      function() vim.cmd.AerialToggle("right") end, mode = "n",               desc = "toggle current structure" },
-    { "<leader>tu",      vim.cmd.UndotreeToggle,                       mode = "n",               desc = "toggle undo tree" },
-    { "<leader>tt",      vim.cmd.NvimTreeToggle,                       mode = "n",               desc = "toggle nvim tree" },
+    { "<leader>tb",     gitsigns.toggle_current_line_blame,           mode = "n",                     desc = "toggle git current line blame" },
+    { "<leader>ts",     function() vim.cmd.AerialToggle("right") end, mode = "n",                     desc = "toggle current structure" },
+    { "<leader>tu",     vim.cmd.UndotreeToggle,                       mode = "n",                     desc = "toggle undo tree" },
+    { "<leader>tt",     vim.cmd.NvimTreeToggle,                       mode = "n",                     desc = "toggle nvim tree" },
     {
         "<leader>te",
         function()
