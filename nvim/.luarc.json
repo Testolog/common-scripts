@@ -1,7 +1,6 @@
 {
-    "diagnostics.globals": [
-        "vim"
-    ],
-    "completion.autoRequire": false
-
+  "diagnostics.globals": [
+    "vim"
+  ],
+  "completion.autoRequire": false
 }

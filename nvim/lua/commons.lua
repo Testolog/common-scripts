@@ -1,6 +1,5 @@
 -- trash place, where save everything, mb in future will refactor it for better
 local const = require("constants")
-local table = require("table")
 local M = {}
 M.border = function(hl_name)
     return {
@@ -64,8 +63,12 @@ M.tprint = function(tbl, indent)
     toprint = toprint .. string.rep(" ", indent - 2) .. "}"
     return toprint
 end
+
 M.merge_table = function(base, semi)
     local result = {}
+    if base == nil then
+        return result
+    end 
     for k, v in pairs(base) do
         result[k] = v
     end
@@ -79,28 +82,5 @@ M.merge_table = function(base, semi)
     return result
 end
 
-M.load_config = function()
-    local json         = require("cjson")
-    local lfs          = require("lfs")
-    local root         = vim.fs.root(0, { const.project_file_name })
-    local al_root      = vim.fn.getcwd()
-    root               = root or al_root
-    local project_name = vim.fs.basename(root)
-    local prj_file     = vim.fs.joinpath(root, const.project_file_name)
-    local default      = {
-        name = project_name,
-    }
-    if lfs.attributes(prj_file, "mode") == nil then
-        local file = io.open(prj_file, "w+")
-        file:write(json.encode(default))
-        file:close()
-    else
-        local file = io.open(prj_file, "r+")
-        local data = file:read("*all")
-        data= json.decode(data)
-        default = M.merge_table(default, data)
-        file:close()
-    end
-    return default
-end
+
 return M
