@@ -158,7 +158,9 @@ local leader_map = {
     },
     -- z
     { "zR", require("ufo").openAllFolds, mode = "n", desc = "open all folds" },
-    { "zM", require("ufo").closeAllFolds, mode = "n", desc = "close all folds" }
+    { "zM", require("ufo").closeAllFolds, mode = "n", desc = "close all folds" },
+    --esp :tnoremap <Esc> <C-\><C-n>
+    { "<Esc>", "<C-\\><C-n>", mode = "t", "escape from terminal" }
 }
 which_key.add(leader_map)
 which_key.add(not_leader_map)

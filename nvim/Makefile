@@ -9,3 +9,6 @@ install:
 
 lint:
 	luacheck --config .luacheckrc ./lua/**/*.lua
+
+clean:
+	rm -rf ./lua_modules luarocks .luarocks

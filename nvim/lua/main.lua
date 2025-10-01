@@ -2,7 +2,6 @@ M = {}
 local const = require("constants")
 local system = require("system")
 local common = require("commons")
-local vim_libs = system.lua_libs_path(vim.fn.stdpath("config"), 5.1)
 local function load_config()
     local json = require("cjson")
     local lfs = require("lfs")
@@ -13,23 +12,23 @@ local function load_config()
     local prj_file = vim.fs.joinpath(root, const.project_file_name)
     local default = {
         name = project_name,
+        lua = {
+            version = 5.1
+        }
     }
     if lfs.attributes(prj_file, "mode") == nil then
         local file = io.open(prj_file, "w+")
         file:write(json.encode(default))
         file:close()
-    else
-        local file = io.open(prj_file, "r+")
-        local data = file:read("*all")
-        data = json.decode(data)
-        default = common.merge_table(default, data)
-        file:close()
+        return default
     end
-    return default
+    local data = common.read_json(prj_file)
+    return common.merge_table(default, data)
 end
 M.collorschema = "catppuccin"
 M.options = require("options")
-M.load_vim_libs = function ()
+M.load_vim_libs = function (lua_version)
+    local vim_libs = system.lua_libs_path(vim.fn.stdpath("config"), lua_version)
     if vim.fn.isdirectory(vim_libs.share) == 1 then
         package.path = package.path .. ";" .. vim_libs.share .. "/?.lua"
     end

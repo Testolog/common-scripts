@@ -18,7 +18,7 @@ return {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" },
-        config = function()
+        config = function ()
             local harpoon = require("harpoon")
             harpoon:setup()
         end
@@ -89,10 +89,30 @@ return {
         "rachartier/tiny-inline-diagnostic.nvim",
         event = "VeryLazy", -- Or `LspAttach`
         priority = 1001,    -- needs to be loaded in first
-        config = function()
-            require('tiny-inline-diagnostic').setup({preset = "modern"})
-            vim.diagnostic.config({ virtual_text = false  }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+        config = function ()
+            require('tiny-inline-diagnostic').setup({ preset = "modern" })
+            vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
         end
-    }
+    },
+    {
+        "rebelot/heirline.nvim",
+    },
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        enabled = false,
+        opts = {
+            background_colour = "#000000",
 
+            -- add any options here
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            "rcarriga/nvim-notify",
+        }
+    }
 }

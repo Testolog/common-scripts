@@ -10,35 +10,32 @@ local function lua_config(project_settings)
     local lua_libs = {
         "lazy.nvim",
         vim.env.VIMRUNTIME,
-
         -- { path = '/home/testolog/common-scripts/nvim/lua_modules' },
         -- { path = "/home/testolog/common-scripts/nvim/lua_modules/share/lua/5.4/?.lua;/home/testolog/common-scripts/nvim/lua_modules/share/lua/5.4/?/init.lua;/usr/local/share/lua/5.4/?.lua;/usr/local/share/lua/5.4/?/init.lua;/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/local/lib/lua/5.4/?.lua;/usr/local/lib/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;/home/testolog/.luarocks/share/lua/5.4/?.lua;/home/testolog/.luarocks/share/lua/5.4/?/init.lua" }
     }
     local default_lua = require("lspconfig.configs.lua_ls")
     local root_path = default_lua.default_config.root_dir
-    print(common.tprint(project_settings))
-
     if common.contains(project_settings, "lua") then
         local lua_rocks_lib = system.lua_libs_path(
             root_path(vim.fn.getcwd()), project_settings.lua.version
         )
         table.insert(lua_libs, lua_rocks_lib.lib)
     end
-    print(common.tprint(lua_libs))
+    local version = project_settings.lua.version or 5.1
     lspconfig.lua_ls.setup({
         runtimes = {
             path = {
                 '?.lua',
                 '?/init.lua',
-                vim.fn.expand '~/.luarocks/share/lua/5.3/?.lua',
-                vim.fn.expand '~/.luarocks/share/lua/5.3/?/init.lua',
-                '/usr/share/5.3/?.lua',
-                '/usr/share/lua/5.3/?/init.lua'
+                vim.fn.expand '~/.luarocks/share/lua/%s/?.lua':format(version),
+                vim.fn.expand '~/.luarocks/share/lua/%s/?/init.lua':format(version),
+                ('/usr/share/%s/?.lua'):format(version),
+                ('/usr/share/lua/%s/?/init.lua'):format(version)
             },
             workspace = {
                 library = {
-                    vim.fn.expand '~/.luarocks/share/lua/5.3',
-                    '/usr/share/lua/5.3'
+                    vim.fn.expand '~/.luarocks/share/lua/%s':format(version),
+                    ('/usr/share/lua/%s'):format(version)
                 }
             }
         },

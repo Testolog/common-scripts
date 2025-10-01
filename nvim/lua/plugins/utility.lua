@@ -8,14 +8,14 @@ return {
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
-        init = function()
+        init = function ()
             vim.o.timeout = true
             vim.o.timeoutlen = 300
         end,
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function()
+        opts = function ()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup({
                 ensure_installed = const.treesitter.lang,
@@ -51,7 +51,7 @@ return {
     },
     {
         "j-hui/fidget.nvim",
-        opts = function()
+        opts = function ()
             require("fidget")
         end,
     },
@@ -66,10 +66,11 @@ return {
         "kylechui/nvim-surround",
         version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
         event = "VeryLazy",
-        config = function()
+        config = function ()
             require("nvim-surround").setup({
                 -- Configuration here, or leave empty to use defaults
             })
         end
-    }
+    },
+    -- lazy.nvim
 }

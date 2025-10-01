@@ -1,7 +1,7 @@
 -- trash place, where save everything, mb in future will refactor it for better
 local const = require("constants")
 local M = {}
-M.border = function(hl_name)
+M.border = function (hl_name)
     return {
         { "╭", hl_name },
         { "─", hl_name },
@@ -14,10 +14,10 @@ M.border = function(hl_name)
     }
 end
 
-M.lsp_on_attach = function(client, bufnr)
+M.lsp_on_attach = function (client, bufnr)
     vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = bufnr })
 end
-M.contains = function(table, val)
+M.contains = function (table, val)
     for i = 1, #table do
         if table[i] == val then
             return true
@@ -26,7 +26,7 @@ M.contains = function(table, val)
     return false
 end
 
-M.lua_libs_path = function(root, lua_version)
+M.lua_libs_path = function (root, lua_version)
     local luarocks = vim.fn.join({ root, "lua_modules" }, "/")
     local share = vim.fn.join({ luarocks, "share", "lua", lua_version, }, "/")
     local lib = vim.fn.join({ luarocks, "lib", "lua", lua_version, }, "/")
@@ -36,7 +36,7 @@ M.lua_libs_path = function(root, lua_version)
     }
 end
 
-M.tprint = function(tbl, indent)
+M.tprint = function (tbl, indent)
     if tbl == nil then
         print("null")
     end
@@ -64,11 +64,14 @@ M.tprint = function(tbl, indent)
     return toprint
 end
 
-M.merge_table = function(base, semi)
+M.merge_table = function (base, semi)
     local result = {}
     if base == nil then
-        return result
-    end 
+        return semi
+    end
+    if semi == nil then
+        return base
+    end
     for k, v in pairs(base) do
         result[k] = v
     end
@@ -82,5 +85,29 @@ M.merge_table = function(base, semi)
     return result
 end
 
+
+local function read_file(path)
+    local f, err = io.open(path, "rb"); if not f then error(err) end
+    local s = f:read("*a"); f:close(); return s
+end
+
+local function read_json(path)
+    local cjson = require "cjson.safe" -- .safe returns nil,err instead of throwing
+    local obj, err = cjson.decode(read_file(path))
+    if not obj then error("JSON decode error: " .. err) end
+    return obj
+end
+M.read_json = read_json
+M.start_mode = function ()
+    if vim.fn.argc() == 0 then
+        return 0
+    end
+    local arg0 = vim.fn.argv(0)
+    arg0 = vim.fn.fnamemodify(arg0, ":p")
+    if vim.fn.isdirectory(arg0) == 1 then
+        return 1
+    end
+    return 2
+end
 
 return M

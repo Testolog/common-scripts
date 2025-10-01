@@ -42,8 +42,11 @@ M.filetype = function ()
         },
     })
 end
-
-M.tmux_rename = function (project_settings)
-
+-- becuase i want to have a name for each folder 
+M.tmux_rename = function (settings)
+    if vim.env.TMUX ~= nil then
+        local tmux_command = string.format("tmux rename-window '%s'", settings.name)
+        vim.fn.system(tmux_command)
+    end
 end
 return M

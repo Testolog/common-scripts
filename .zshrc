@@ -8,8 +8,11 @@ export COMMON_SCRIPT="$HOME/common-scripts"
 
 #append logic to install using base package installer
 
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
 eval "$(rbenv init - zsh)"
-eval "$(pyenv init -)"
+eval "$(pyenv init - zsh)"
 
 DISABLE_AUTO_UPDATE="true"
 

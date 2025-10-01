@@ -2,8 +2,9 @@ local vimrc = vim.fn.stdpath("config") .. "/vimrc.vim"
 require("options")
 -- todo is kind funny, but common has dependency on lib
 local main = require("main")
+local lua_version = 5.1
 
-main.load_vim_libs()
+main.load_vim_libs(lua_version)
 -- vim.cmd.source(vimrc)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
