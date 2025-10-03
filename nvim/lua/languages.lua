@@ -54,6 +54,15 @@ local function lua_config(project_settings)
         }
     })
 end
+local function sql_ingration()
+    local cmp = require("cmp")
+    cmp.setup.filetype({ "sql" }, {
+        sources = {
+            { name = "vim-dadbob-completion" },
+            { name = "buffer" }
+        }
+    })
+end
 M.setup = function (project_settings)
     local java = require('java')
     local config = require("lazy.core.config")
@@ -93,6 +102,7 @@ M.setup = function (project_settings)
     })
 
     lua_config(project_settings)
+    sql_ingration()
 
     -- vim.lsp.handlers["textDocument/typeDefinition"] = function(_, method, result)
     --   if result and vim.tbl_islist(result) then

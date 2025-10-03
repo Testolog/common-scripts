@@ -25,6 +25,7 @@ local function load_config()
     local data = common.read_json(prj_file)
     return common.merge_table(default, data)
 end
+
 M.collorschema = "catppuccin"
 M.options = require("options")
 M.load_vim_libs = function (lua_version)

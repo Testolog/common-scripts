@@ -54,6 +54,7 @@ local leader_map = {
     { "<leader>ts", function () vim.cmd.AerialToggle("right") end, mode = "n", desc = "toggle current structure" },
     { "<leader>tu", vim.cmd.UndotreeToggle, mode = "n", desc = "toggle undo tree" },
     { "<leader>tt", vim.cmd.NvimTreeToggle, mode = "n", desc = "toggle nvim tree" },
+    -- { "<leader>tq", vim.}
     {
         "<leader>te",
         function ()
@@ -160,7 +161,6 @@ local leader_map = {
     { "zR", require("ufo").openAllFolds, mode = "n", desc = "open all folds" },
     { "zM", require("ufo").closeAllFolds, mode = "n", desc = "close all folds" },
     --esp :tnoremap <Esc> <C-\><C-n>
-    { "<Esc>", "<C-\\><C-n>", mode = "t", "escape from terminal" }
 }
 which_key.add(leader_map)
 which_key.add(not_leader_map)

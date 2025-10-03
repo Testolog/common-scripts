@@ -1,4 +1,4 @@
-local cmdline_config = function()
+local cmdline_config = function ()
     local cmp = require("cmp")
     local mapping = cmp.mapping.preset.cmdline()
 
@@ -56,7 +56,7 @@ return {
     {
         "hrsh7th/nvim-cmp",
         event = 'InsertEnter',
-        opts = function()
+        opts = function ()
             return require("configs.cmp_opts")
         end,
         dependencies = {
@@ -76,7 +76,7 @@ return {
             {
                 "windwp/nvim-autopairs",
                 opts = { fast_wrap = {}, disable_filetype = { "TelescopePrompt", "vim" } },
-                config = function(_, opts) -- setup cmp for autopairs
+                config = function (_, opts) -- setup cmp for autopairs
                     require("nvim-autopairs").setup(opts)
                     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
                     require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
@@ -91,7 +91,7 @@ return {
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         },
-        config = function()
+        config = function ()
             local tree = require("nvim-tree")
             tree.setup({
                 renderer = {
@@ -121,10 +121,27 @@ return {
             "nvim-treesitter/nvim-treesitter"
         },
         opts = {
-            provider_selector = function(bufnr, filetype, buftype)
+            provider_selector = function (bufnr, filetype, buftype)
                 return { 'treesitter', 'indent' }
             end
         }
     },
     { "nvim-dap" },
+    {
+        'kristijanhusak/vim-dadbod-ui',
+        dependencies = {
+            { 'tpope/vim-dadbod', lazy = true },
+            { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+        },
+        cmd = {
+            'DBUI',
+            'DBUIToggle',
+            'DBUIAddConnection',
+            'DBUIFindBuffer',
+        },
+        init = function ()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
+    }
 }
