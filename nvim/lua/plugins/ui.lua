@@ -51,21 +51,18 @@ return {
         "rachartier/tiny-code-action.nvim",
         dependencies = {
             { "nvim-lua/plenary.nvim" },
-
-            -- optional picker via telescope
-            { "nvim-telescope/telescope.nvim" },
-            -- optional picker via fzf-lua
-            { "ibhagwan/fzf-lua" },
-            -- .. or via snacks
             {
                 "folke/snacks.nvim",
                 opts = {
                     terminal = {},
                 }
-            }
+            },
+
         },
         event = "LspAttach",
-        opts = {},
+        opts = {
+            picker="snacks"
+        },
     },
     {
         "folke/snacks.nvim",
@@ -80,6 +77,7 @@ return {
             picker = { enabled = true },
             notifier = { enabled = false },
             quickfile = { enabled = true },
+            terminal = { enabled = true },
             matcher = {
                 frecency = true
             }
@@ -114,5 +112,10 @@ return {
             --   If not available, we use `mini` as the fallback
             "rcarriga/nvim-notify",
         }
+    },
+    {
+        "folke/edgy.nvim",
+        event = "VeryLazy",
+        opts = {}
     }
 }

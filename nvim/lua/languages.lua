@@ -47,21 +47,76 @@ local function lua_config(project_settings)
             }
         }
     })
-    lazydev.setup({
-        enabled = true,
-        config = {
-            library = lua_libs
-        }
+    lazydev.setup()
+end
+-- local function linter()
+--     require("lint").linters_by_ft =  {
+--         sql = { "sqlfluff" },
+--     }
+-- end
+local function null_lsp()
+    local null_ls = require("null-ls")
+    null_ls.setup({
+        sources = {
+            -- Diagnostics (lint)
+            null_ls.builtins.diagnostics.sqlfluff.with({
+                extra_args = { "--dialect", "sparksql" },
+            }),
+
+            -- Formatting (sqlfluff fix)
+            null_ls.builtins.formatting.sqlfluff.with({
+                extra_args = { "--dialect", "sparksql" },
+            }),
+        },
+
+        -- behaves like LSP
+        on_attach = function (client, bufnr)
+            if client.supports_method("textDocument/formatting") then
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    buffer = bufnr,
+                    callback = function ()
+                        vim.lsp.buf.format({ bufnr = bufnr })
+                    end,
+                })
+            end
+        end,
     })
 end
-local function sql_ingration()
-    local cmp = require("cmp")
-    cmp.setup.filetype({ "sql" }, {
-        sources = {
-            { name = "vim-dadbob-completion" },
-            { name = "buffer" }
+local function schema_support(project_settings)
+    lspconfig.yamlls.setup({
+        settings = {
+            yaml = {
+                schemaStore = {
+                    -- You must disable built-in schemaStore support if you want to use
+                    -- this plugin and its advanced options like `ignore`.
+                    enable = false,
+                    -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+                    url = "",
+                },
+                schemas = require('schemastore').yaml.schemas(),
+                validate = true,
+                completion = true,
+                hover = true,
+            },
         }
     })
+    lspconfig.jsonls.setup({
+        settings = {
+            json = {
+                schemas = require('schemastore').json.schemas(),
+                validate = true,
+                completion = true,
+                hover = true,
+            },
+        },
+    })
+    lspconfig.taplo.setup {
+        settings = {
+            evenBetterToml = {
+            }
+        }
+    }
+    -- lspconfig.tombi.setup({})
 end
 M.setup = function (project_settings)
     local java = require('java')
@@ -102,21 +157,10 @@ M.setup = function (project_settings)
     })
 
     lua_config(project_settings)
-    sql_ingration()
+    schema_support(project_settings)
+    null_lsp()
+    -- linter()
 
-    -- vim.lsp.handlers["textDocument/typeDefinition"] = function(_, method, result)
-    --   if result and vim.tbl_islist(result) then
-    --     print(result)
-    --     -- Custom logic to open in a new split
-    --     vim.cmd('vsplit')
-    --     vim.lsp.util.jump_to_location(result[1])
-    --   end
-    -- end
-    -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.buf.hover({ border = 'rounded' })
-    -- vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.buf.signature_help(
-    --     { border = border('rounded') }
-    -- )
-    --
 
     lspconfig.jdtls.setup {
         settings = {
@@ -143,63 +187,70 @@ M.setup = function (project_settings)
             }
         }
     }
-    -- java.setup {
-    --     jdk = {
-    --         auto_install = false,
-    --     },
-    --     auto_install = false,
-    --     root_markers = {
-    --         'settings.gradle',
-    --         'settings.gradle.kts',
-    --         'pom.xml',
-    --         'build.gradle',
-    --         'mvnw',
-    --         'gradlew',
-    --         'build.gradle',
-    --         'build.gradle.kts',
-    --     },
-    -- }
+    java.setup {
+        jdk = {
+            auto_install = false,
+        },
+        auto_install = false,
+        root_markers = {
+            'settings.gradle',
+            'settings.gradle.kts',
+            'pom.xml',
+            'build.gradle',
+            'mvnw',
+            'gradlew',
+            'build.gradle',
+            'build.gradle.kts',
+        },
+    }
     lspconfig.pyright.setup({
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        capabilities = capabilities,
+        autostart = true,
+        single_file_support = true,
+        root_dir = lspconfig.util.root_pattern(
+            "pyproject.toml",
+            "setup.py",
+            ".git"
+        ),
         settings = {
-            cmd = { "pyright-langserver", "--stdio" },
-            filetypes = { "python" },
-            autostart = true,
-            single_file_support = true,
-            -- root_dir = util.root_pattern("pyproject.toml", "setup.py"),
-            settings = {
-                pyright = {
-                    disableOrganizeImports = true
+            pyright = {
+                disableOrganizeImports = true,
+            },
+            python = {
+                pythonPath = vim.fn.exepath("python"),
+                analysis = {
+                    autoImportCompletions = true,
+                    autoSearchPaths = true,
+                    diagnosticMode = "workspace",
+                    useLibraryCodeForTypes = true,
+                    typeCheckingMode = "basic",
                 },
-                python = {
-                    analysis = {
-                        autoSearchPaths = true,
-                        diagnosticMode = "workspace",
-                        useLibraryCodeForTypes = true,
-                        autoImportCompletions = true,
-                        ignore = { '*' }
-                    }
-                }
-            }
-        }
+            },
+        },
     })
     lspconfig.ruff.setup({
-        settings = {
-            cmd = { "ruff", "server" },
-            filetypes = { "python" },
-            autostart = true,
-            single_file_support = true,
-            ruff_lsp = {
-                server_capabilities = {
-                    hoverProvider = false
-                }
-            }
-        }
+        cmd = { "ruff", "server" },
+        filetypes = { "python" },
+        capabilities = capabilities,
+        autostart = true,
+        single_file_support = true,
+        init_options = {
+            settings = {
+                organizeImports = false,
+            },
+        },
+        on_attach = function (client)
+            client.server_capabilities.hoverProvider = false
+        end,
     })
     lspconfig.rust_analyzer.setup({})
-
     mason.setup({})
     mason_lspconfig.setup({
-        automatic_enable = false
+        ensure_installed = { "yamlls", 'rust_analyzer' },
+        automatic_installation = false,
+        automatic_enable = true
     })
 end
 return M

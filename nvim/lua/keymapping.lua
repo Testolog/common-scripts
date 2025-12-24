@@ -26,6 +26,35 @@ local function ivy_picker_layout(fun)
         fun(setup)
     end
 end
+local function smart_picker_layout(fun)
+    local setup = {
+        layout = {
+            reverse = false,
+            layout = {
+                box = "horizontal",
+                backdrop = false,
+                width = 0.8,
+                height = 0.9,
+                border = "none",
+                {
+                    box = "vertical",
+                    { win = "input", height = 1, border = "rounded", title = "{title} {live} {flags}", title_pos = "center" },
+                    { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+                },
+                {
+                    win = "preview",
+                    title = "{preview:Preview}",
+                    width = 0.45,
+                    border = "rounded",
+                    title_pos = "center",
+                },
+            },
+        }
+    }
+    return function ()
+        fun(setup)
+    end
+end
 local leader_map = {
     { "gs", ":w | source %<CR>", mode = "n", desc = "save source" },
     --other
@@ -33,11 +62,11 @@ local leader_map = {
     { "<space><space>", snacks.picker.smart, desc = "Smart Find Files" },
     { "<leader>fk", ivy_picker_layout(snacks.picker.keymaps), mode = "n", desc = "FindKey" },
     -- f find
-    { "<leader>ff", ivy_picker_layout(snacks.picker.files), mode = "n", desc = "find files" },
-    { "<leader>fg", ivy_picker_layout(snacks.picker.git_files), mode = "n", desc = "find in git files" },
-    { "<leader>fb", ivy_picker_layout(snacks.picker.buffers), mode = "n", desc = "find in buffer" },
-    { "<leader>fc", ivy_picker_layout(snacks.picker.commands), mode = "n", desc = "find in commands" },
-    { "<leader>fs", ivy_picker_layout(snacks.picker.grep), mode = "n", desc = "find live grep" },
+    { "<leader>ff", smart_picker_layout(snacks.picker.files), mode = "n", desc = "find files" },
+    { "<leader>fg", smart_picker_layout(snacks.picker.git_files), mode = "n", desc = "find in git files" },
+    { "<leader>fb", smart_picker_layout(snacks.picker.buffers), mode = "n", desc = "find in buffer" },
+    { "<leader>fc", smart_picker_layout(snacks.picker.commands), mode = "n", desc = "find in commands" },
+    { "<leader>fs", smart_picker_layout(snacks.picker.grep), mode = "n", desc = "find live grep" },
     -- g go/git
     { "gld", ivy_picker_layout(snacks.picker.lsp_definitions), desc = "Goto Definition" },
     { "glD", ivy_picker_layout(snacks.picker.lsp_declarations), desc = "Goto Declaration" },
@@ -161,6 +190,9 @@ local leader_map = {
     { "zR", require("ufo").openAllFolds, mode = "n", desc = "open all folds" },
     { "zM", require("ufo").closeAllFolds, mode = "n", desc = "close all folds" },
     --esp :tnoremap <Esc> <C-\><C-n>
+    -- w
+    { "<leader>we", "<C-W>w", mode = "n", desc = "next window" },
+    { "<leader>wr", "<C-W>W", mode = "n", desc = "prev window" },
 }
 which_key.add(leader_map)
 which_key.add(not_leader_map)

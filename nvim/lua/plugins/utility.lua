@@ -72,5 +72,14 @@ return {
             })
         end
     },
+    {
+        "m-gail/escape.nvim"
+    },
+    { "b0o/schemastore.nvim" },
+    { "mfussenegger/nvim-lint" },
+    {
+        "nvimtools/none-ls.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
     -- lazy.nvim
 }
