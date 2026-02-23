@@ -73,6 +73,7 @@ local leader_map = {
     { "glr", ivy_picker_layout(snacks.picker.lsp_references), nowait = true, desc = "References" },
     { "glI", ivy_picker_layout(snacks.picker.lsp_implementations), desc = "Goto Implementation" },
     { "glt", ivy_picker_layout(snacks.picker.lsp_type_definitions), desc = "Goto T[y]pe Definition" },
+    { "gls", vim.lsp.buf.hover, desc = "display signature" },
     { "<leader>gt", gitsigns.diffthis, mode = "n", desc = "git show difference this" },
     { "<leader>ggc", gitsigns.preview_hunk, mode = "n", desc = "git show changes with" },
     { "<leader>ggs", gitsigns.stage_hunk, mode = "n", desc = "git stage hunk" },
@@ -119,6 +120,17 @@ local leader_map = {
             require("quicker").toggle({ loclist = true })
         end,
         desc = "Toggle quickfix",
+    },
+    {
+        "<leader>tz",
+        function ()
+            require("zen-mode").toggle({
+                window = {
+                    width = .55 -- width will be 85% of the editor width
+                }
+            })
+        end,
+        desc = "Toggle Zen Mode",
     },
     -- harpoon
     {

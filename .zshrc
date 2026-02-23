@@ -13,6 +13,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 
 eval "$(rbenv init - zsh)"
 eval "$(pyenv init - zsh)"
+eval "$(pyenv virtualenv-init -)"
 
 [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
 
@@ -53,3 +54,11 @@ fi
 [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
 [ -s ~/.luaver/completions/luaver.bash ] && . ~/.luaver/completions/luaver.bash
 source <(/Users/rnad/.playctx/bin/playctx-switcher --init=zsh)
+
+# Created by `pipx` on 2026-01-14 21:31:26
+export PATH="$PATH:/Users/rnad/.local/bin"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/rnad/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

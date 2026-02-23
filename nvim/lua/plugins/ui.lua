@@ -61,7 +61,7 @@ return {
         },
         event = "LspAttach",
         opts = {
-            picker="snacks"
+            picker = "snacks"
         },
     },
     {
@@ -117,5 +117,13 @@ return {
         "folke/edgy.nvim",
         event = "VeryLazy",
         opts = {}
+    },
+    -- Lua
+    {
+        "folke/zen-mode.nvim",
+        opts = {
+            width = .85
+
+        }
     }
 }

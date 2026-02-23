@@ -37,7 +37,8 @@ M.user_command = function (project_settings)
     vim.api.nvim_create_user_command(
         "UnEscape",
         function (input)
-            return vim.fn.execute(string.format("python -c \"print('%s'.encode('utf-8').decode('unicode_escape'))\"", input.args))
+            return vim.fn.execute(string.format("python -c \"print('%s'.encode('utf-8').decode('unicode_escape'))\"",
+                input.args))
         end,
         {
             desc = "un escape string "
@@ -99,6 +100,80 @@ M.auto_commands = function (project_settings)
             vim.cmd("Maven")
         end,
     })
+    vim.api.nvim_create_user_command("AppendPy", function ()
+        -- Check for Snacks
+        local ok, snacks = pcall(require, "snacks")
+        if not ok then return vim.notify("Snacks.nvim not found!", vim.log.levels.ERROR) end
+
+        -- Define the custom action to append path and restart LSP
+        local function add_pythonpath(picker, item)
+            picker:close()
+            if not item or not item.file then return end
+
+            local path = item.file
+
+            -- 1. Get current PYTHONPATH
+            local current_env = vim.fn.getenv('PYTHONPATH')
+            if current_env == vim.NIL then current_env = "" end
+
+            -- 2. Detect OS separator
+            local is_windows = vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1
+            local sep = is_windows and ';' or ':'
+
+            -- 3. Append new path
+            local new_env = (current_env ~= "" and (current_env .. sep) or "") .. path
+            vim.fn.setenv('PYTHONPATH', new_env)
+
+            -- 4. Restart LSP
+            vim.cmd("LspRestart")
+
+            vim.notify("PYTHONPATH appended & LSP restarted:\n" .. path, vim.log.levels.INFO)
+        end
+
+        -- Open the Explorer Picker
+        snacks.picker.explorer({
+            -- Start at Home Directory
+            cwd = vim.fn.expand("~"),
+
+            -- FORCE Floating Layout (Center Window)
+            layout = { preset = "default", preview = false },
+            exclude = {
+                "__pycache__",
+                "node_modules",
+                ".git",
+                ".venv",
+                ".mypy_cache",
+                ".pytest_cache",
+                ".ruff_cache",
+                "build",
+                "dist",
+                "egg-info",
+            },
+
+            -- Don't show hidden files (dotfiles) unless toggled
+            hidden = false,
+            -- Keymaps
+            win = {
+                input = {
+                    keys = {
+                        -- Use <C-e> to "Execute" (Add to Path)
+                        ["<C-e>"] = { "add_pythonpath", mode = { "i", "n" } },
+                    },
+                },
+                list = {
+                    keys = {
+                        -- Use <C-e> in the list view too
+                        ["<C-e>"] = "add_pythonpath",
+                    }
+                }
+            },
+
+            -- Register the custom action
+            actions = {
+                add_pythonpath = add_pythonpath
+            }
+        })
+    end, {})
 end
 
 M.filetype = function ()

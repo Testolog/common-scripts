@@ -17,4 +17,10 @@ for using presto-ssh client need to overwrite such as variables:
 * SSH_PORT_PRESTO=
 * SSH_USER_PRESTO=
 
-
+## Tools:
+### Kafka
+* kaskade
+### K8s
+* k9s
+### Airflow 
+* flowrs
