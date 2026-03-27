@@ -1,6 +1,6 @@
 local luasnip = require("luasnip")
 local cmp = require("cmp")
-local common = require("commons")
+local util = require("util")
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local select_opts = { behavior = cmp.SelectBehavior.Select }
@@ -19,11 +19,11 @@ return {
     },
     window = {
         completion = {
-            border = common.border "CmpBorder",
+            border = util.border "CmpBorder",
             winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
         },
         documentation = {
-            border = common.border "CmpDocBorder",
+            border = util.border "CmpDocBorder",
         },
     },
     formatting = {

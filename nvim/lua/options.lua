@@ -1,9 +1,7 @@
 vim.g.mapleader = " "
 
 vim.opt.encoding = "UTF-8"
-
 vim.opt.guicursor = ""
-
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
@@ -25,20 +23,18 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.g.have_nerd_font = true
 vim.opt.guifont = "Nerd Font"
-vim.opt.termguicolors = true
 vim.opt.fixeol = false
 
-vim.o.foldcolumn = '1' -- '0' is not bad
-vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldcolumn = "1"
+vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
--- vim.diagnostic.opts.update_in_insert = true
 vim.opt.updatetime = 50
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 vim.opt.colorcolumn = "80"
 vim.g.tmux_navigator_no_mappings = 1

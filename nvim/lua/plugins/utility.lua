@@ -33,7 +33,7 @@ return {
     },
     {
         'nvim-treesitter/playground',
-        dependecies = { 'nvim-treesitter/nvim-treesitter' }
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }
     },
     {
         "nvim-telescope/telescope.nvim",
@@ -80,6 +80,18 @@ return {
     {
         "nvimtools/none-ls.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
+        "folke/persistence.nvim",
+        event = "BufReadPre",
+        opts = {
+            options = { "buffers", "curdir", "tabpages", "winsize", "help", "terminal", "folds" },
+        },
+        keys = {
+            { "<leader>qs", function () require("persistence").load() end, desc = "Restore session for cwd" },
+            { "<leader>ql", function () require("persistence").load({ last = true }) end, desc = "Restore last session" },
+            { "<leader>qd", function () require("persistence").stop() end, desc = "Don't save current session" },
+        },
     },
     -- lazy.nvim
 }
