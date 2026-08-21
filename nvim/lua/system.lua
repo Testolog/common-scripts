@@ -38,6 +38,23 @@ function M.user_command(project_settings)
     require("format_selection").run(opts.buf or vim.api.nvim_get_current_buf(), opts.line1, opts.line2)
   end, { range = true, desc = "format selected lines as JSON, YAML, SQL, or Python (picker)" })
 
+  vim.api.nvim_create_user_command("ReloadConfig", function()
+    local modules = {
+      "options", "main", "system", "keymapping", "languages", "constants",
+      "format_selection", "arduino", "c_run", "idf", "error_log"
+    }
+    for _, mod in ipairs(modules) do
+      package.loaded[mod] = nil
+    end
+    for k, _ in pairs(package.loaded) do
+      if k:match("^util") then
+        package.loaded[k] = nil
+      end
+    end
+    vim.cmd("source " .. vim.env.MYVIMRC)
+    vim.notify("Neovim configuration reloaded!", vim.log.levels.INFO)
+  end, { desc = "Reload Neovim configuration" })
+
   require("arduino").register_commands()
   require("error_log").setup()
   require("c_run").register_commands()
@@ -66,6 +83,18 @@ function M.auto_commands(project_settings)
     pattern = "pom.xml",
     callback = function()
       vim.cmd("Maven")
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+    group = vim.api.nvim_create_augroup("disable_undofile_for_long_paths", { clear = true }),
+    callback = function(args)
+      local filepath = vim.api.nvim_buf_get_name(args.buf)
+      -- Neovim replaces '/' with '%' for the undo file name
+      local undofile_name = filepath:gsub("/", "%%")
+      if #undofile_name >= 250 then
+        vim.bo[args.buf].undofile = false
+      end
     end,
   })
 

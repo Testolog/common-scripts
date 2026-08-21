@@ -142,6 +142,18 @@ local leader_map = {
     { "<leader>qs", function() require("persistence").load() end, desc = "Restore session for cwd" },
     { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore last session" },
     { "<leader>qd", function() require("persistence").stop() end, desc = "Don't save current session" },
+    -- Java Testing / Debugging
+    { "<leader>jr", "<cmd>JavaTestRunCurrentMethod<CR>", mode = "n", desc = "Run Java test method" },
+    { "<leader>jc", "<cmd>JavaTestRunCurrentClass<CR>", mode = "n", desc = "Run Java test class" },
+    { "<leader>jv", "<cmd>JavaTestViewLastReport<CR>", mode = "n", desc = "View last test report" },
+    { "<leader>jd", "<cmd>JavaTestDebugCurrentMethod<CR>", mode = "n", desc = "Debug Java test method" },
+    { "<leader>db", function() require("dap").toggle_breakpoint() end, mode = "n", desc = "Toggle Breakpoint" },
+    { "<C-F8>", function() require("dap").toggle_breakpoint() end, mode = "n", desc = "Toggle Breakpoint" },
+    { "<F9>", function() require("dap").continue() end, mode = "n", desc = "DAP Continue (Resume)" },
+    { "<F8>", function() require("dap").step_over() end, mode = "n", desc = "DAP Step Over" },
+    { "<F7>", function() require("dap").step_into() end, mode = "n", desc = "DAP Step Into" },
+    { "<S-F8>", function() require("dap").step_out() end, mode = "n", desc = "DAP Step Out" },
+    { "<leader>du", function() require("dapui").toggle() end, mode = "n", desc = "Toggle DAP UI" },
     -- Arduino / ESP32
     { "<leader>ac", "<cmd>ArduinoCompile<CR>", mode = "n", desc = "Arduino compile" },
     { "<leader>au", "<cmd>ArduinoUpload<CR>", mode = "n", desc = "Arduino upload (auto-detect ESP32)" },

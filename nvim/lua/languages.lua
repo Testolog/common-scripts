@@ -239,6 +239,12 @@ function M.setup(project_settings)
                     diagnosticMode = "workspace",
                     useLibraryCodeForTypes = true,
                     typeCheckingMode = "basic",
+                    extraPaths = {}, -- Can be populated dynamically if needed
+                    stubPath = "typings",
+                    indexing = true, -- Force aggressive indexing
+                    packageIndexDepths = {
+                        { name = "airflow", depth = 5, includeSubModules = true }
+                    },
                 },
             },
         },

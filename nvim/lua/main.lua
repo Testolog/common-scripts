@@ -7,23 +7,36 @@ local util = require("util")
 local function load_config()
   local json = require("cjson")
   local lfs = require("lfs")
+  
+  -- First, try to find an existing project file by walking up the directory tree
   local root = vim.fs.root(0, { const.project_file_name })
+  
+  -- If not found, use the current working directory as the root
   root = root or vim.fn.getcwd()
+  
   local project_name = vim.fs.basename(root)
   local prj_file = vim.fs.joinpath(root, const.project_file_name)
+  
   local default = {
     name = project_name,
     lua = { version = 5.1 },
     yaml = { schemas = {}, schema_store_url = nil },
     json = { schemas = {}, schema_store_url = nil },
   }
+  
+  -- If the file doesn't exist in the resolved root, create it
   if lfs.attributes(prj_file, "mode") == nil then
     local io_prj_file = io.open(prj_file, "w+")
-    io_prj_file:write(json.encode(default))
-    io_prj_file:close()
+    if io_prj_file then
+      io_prj_file:write(json.encode(default))
+      io_prj_file:close()
+    else
+      vim.notify("Failed to create " .. const.project_file_name .. " in " .. root, vim.log.levels.WARN)
+    end
     default.root = root
     return default
   end
+  
   local data = util.read_json(prj_file)
   local merged = util.merge_table(default, data)
   merged.root = root
