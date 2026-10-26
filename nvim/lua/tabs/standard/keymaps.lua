@@ -1,5 +1,5 @@
+-- which-key style specs for the Standard tab. tabs.runtime installs them on TabEnter and removes them on TabLeave.
 local gitsigns = require("gitsigns")
-local which_key = require("which-key")
 local harpoon = require("harpoon")
 local trouble = require("trouble")
 local ntree = require("nvim-tree.api")
@@ -16,6 +16,7 @@ local v_map = {
     { "<C-S-DOWN>", ":m '>+1<CR>gv=gv", desc = "move selected line down", expr = false, mode = "v", nowait = false, remap = false },
     { "<C-S-UP>", ":m '<-2<CR>gv=gv", desc = "move selected line up", expr = false, mode = "v", nowait = false, remap = false },
     { "<leader>cf", ":'<,'>FormatSelection<CR>", mode = "v", desc = "format selection (JSON/YAML/SQL/Python)" },
+    { "<leader>A", ":AgentSend<CR>", mode = "v", desc = "AgentSend: selection to an agent's write buffer" },
 }
 
 local function ivy_picker_layout(fun)
@@ -176,6 +177,8 @@ local leader_map = {
     { "<leader>is", "<cmd>IDFMonitorStop<CR>", mode = "n", desc = "IDF stop monitor" },
 }
 
-which_key.add(leader_map)
-which_key.add(not_leader_map)
-which_key.add(v_map)
+local all = {}
+vim.list_extend(all, leader_map)
+vim.list_extend(all, not_leader_map)
+vim.list_extend(all, v_map)
+return all

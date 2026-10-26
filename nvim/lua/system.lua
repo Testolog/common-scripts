@@ -40,8 +40,14 @@ function M.user_command(project_settings)
 
   vim.api.nvim_create_user_command("ReloadConfig", function()
     local modules = {
-      "options", "main", "system", "keymapping", "languages", "constants",
-      "format_selection", "arduino", "c_run", "idf", "error_log"
+      "options", "main", "system", "languages", "constants",
+      "format_selection", "arduino", "c_run", "idf", "error_log",
+      "tabs.standard", "tabs.standard.keymaps", "tabs.agentic", "tabs.agentic.keymaps",
+      "tabs.system_standard", "tabs.system_agentic", "tabs.shared.obsidian", "tabs.shared.cmp_project",
+      "system_project", "system_project.kinds", "system_project.catalog",
+      "tabs.agentic.actions", "tabs.agentic.client", "tabs.agentic.create", "tabs.agentic.layout",
+      "tabs.agentic.lsp_bridge", "tabs.agentic.read", "tabs.agentic.send", "tabs.agentic.state",
+      "tabs.agentic.store", "tabs.agentic.tree", "tabs.agentic.write",
     }
     for _, mod in ipairs(modules) do
       package.loaded[mod] = nil
@@ -73,8 +79,10 @@ function M.auto_commands(project_settings)
   vim.api.nvim_create_autocmd("TermOpen", {
     group = vim.api.nvim_create_augroup("custom_configuration", { clear = true }),
     callback = function()
-      vim.opt.number = false
-      vim.opt.relativenumber = false
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.signcolumn = "no"
+      vim.opt_local.foldcolumn = "0"
     end,
   })
 

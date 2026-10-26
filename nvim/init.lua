@@ -17,7 +17,12 @@ vim.opt.rtp:prepend(lazypath)
 
 main.load_vim_libs(5.1)
 
-require("lazy").setup("plugins", {
+require("lazy").setup({
+  spec = {
+    { import = "tabs.shared.plugins" },
+    { import = "tabs.standard.plugins" },
+    { import = "tabs.agentic.plugins" },
+  },
   change_detection = { enabled = true, notify = false },
 })
 

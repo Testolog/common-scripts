@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "nvim_project",
+  "description": "Per-project Neovim settings (.nvim_project.json). Every key is optional and unknown keys are allowed so older files still load. Tool `mutates` defaults to true when absent, so Ask mode stays read-only.",
+  "type": "object",
+  "additionalProperties": true,
+  "$defs": {
+    "named_path": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "path": { "type": "string" }
+      },
+      "required": ["name", "path"]
+    },
+    "tool": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "function": { "type": "string" },
+        "description": { "type": "string" },
+        "mutates": { "type": "boolean", "default": true },
+        "kind": { "type": "string", "enum": ["shell", "lsp", "mcp"], "default": "shell" }
+      },
+      "required": ["name", "function", "description"]
+    },
+    "schema_map": {
+      "type": "object",
+      "description": "Schema URL or path mapped to a file glob (string) or a list of globs.",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" } }
+        ]
+      }
+    }
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Project name. Defaults to the project directory basename."
+    },
+    "lua": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": ["number", "string"],
+          "description": "Lua version used for lua_modules paths and lua_ls runtime paths."
+        }
+      },
+      "additionalProperties": true
+    },
+    "yaml": {
+      "type": "object",
+      "properties": {
+        "schemas": { "$ref": "#/$defs/schema_map" },
+        "schema_store_url": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "json": {
+      "type": "object",
+      "properties": {
+        "schemas": { "$ref": "#/$defs/schema_map" },
+        "schema_store_url": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "ssh_key": {
+      "type": "string",
+      "description": "Key passed to ssh-add by :SSHKeyLoad."
+    },
+    "arduino": {
+      "type": "object",
+      "description": "Arduino / ESP32 settings used by the Arduino commands.",
+      "additionalProperties": true
+    },
+    "project_type": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "system_prompt": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/named_path" }
+    },
+    "system_skills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/named_path" }
+    },
+    "project_prompt": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/named_path" }
+    },
+    "project_skills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/named_path" }
+    },
+    "system_tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "project_tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "vendor": { "type": "string", "enum": ["cursor", "openai"] },
+          "context_limit": { "type": "integer" },
+          "base_url": { "type": "string" },
+          "api_key": { "type": "string" }
+        },
+        "required": ["name", "vendor", "context_limit"],
+        "if": { "properties": { "vendor": { "const": "openai" } } },
+        "then": { "required": ["base_url"] }
+      }
+    },
+    "mcp_servers": {
+      "type": "array",
+      "description": "Activation overlay for servers declared in ~/.cursor/mcp.json. Connection url and headers come from that file.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "isActive": { "type": "boolean" }
+        },
+        "required": ["name", "isActive"]
+      }
+    }
+  }
+}

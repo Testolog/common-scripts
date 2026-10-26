@@ -1,0 +1,16 @@
+{
+  "models": [
+    {
+      "id": "auto-smart[optimize_for=balanced]",
+      "label": "Auto Balance"
+    },
+    {
+      "id": "auto-smart[optimize_for=intelligence]",
+      "label": "Auto Intelligence"
+    },
+    {
+      "id": "auto-smart[optimize_for=cost]",
+      "label": "Auto Cost"
+    }
+  ]
+}
