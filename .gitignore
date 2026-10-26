@@ -158,10 +158,11 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-./nvim/lazy-lock.json
-./nvim/coc-settings.json
-./custor_function.sh
+nvim/lazy-lock.json
+nvim/coc-settings.json
+custor_function.sh
 
-./tmux/plugins/
-./system_project/
-./kitty/sessions/
+tmux/plugins/
+system_project/
+kitty/sessions/
+.nvim_project.json
