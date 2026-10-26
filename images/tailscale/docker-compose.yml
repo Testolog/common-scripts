@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale_proxy
+    hostname: work-mac-docker
+    environment:
+      - TS_USERSPACE=true
+      - TS_SOCKS5_SERVER=:1055
+      - TS_OUTBOUND_HTTP_PROXY_LISTEN=:1056
+      - TS_AUTHKEY=${TS_AUTHKEY}
+    volumes:
+      - tailscale_data:/var/lib/tailscale
+    ports:
+      - "1055:1055"
+      - "1056:1056"
+    restart: unless-stopped
+
+  moonlight-tunnel:
+    image: gogost/gost:latest
+    container_name: moonlight_tunnel
+    command: 
+      - "-L=tcp://:47984/${ARCH_TAILSCALE_IP}:47984"
+      - "-L=tcp://:47989/${ARCH_TAILSCALE_IP}:47989"
+      - "-L=tcp://:47990/${ARCH_TAILSCALE_IP}:47990"
+      - "-L=tcp://:48010/${ARCH_TAILSCALE_IP}:48010"
+      - "-L=udp://:47998/${ARCH_TAILSCALE_IP}:47998"
+      - "-L=udp://:47999/${ARCH_TAILSCALE_IP}:47999"
+      - "-L=udp://:48000/${ARCH_TAILSCALE_IP}:48000"
+      - "-L=udp://:48002/${ARCH_TAILSCALE_IP}:48002"
+      - "-L=udp://:48010/${ARCH_TAILSCALE_IP}:48010"
+      # Routes all traffic above through the Tailscale container's SOCKS5 proxy
+      - "-F=socks5://tailscale:1055"
+    ports:
+      - "47984:47984/tcp"
+      - "47989:47989/tcp"
+      - "47990:47990/tcp"
+      - "48010:48010/tcp"
+      - "47998:47998/udp"
+      - "47999:47999/udp"
+      - "48000:48000/udp"
+      - "48002:48002/udp"
+      - "48010:48010/udp"
+    depends_on:
+      - tailscale
+    restart: unless-stopped
+
+volumes:
+  tailscale_data:

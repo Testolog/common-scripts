@@ -166,3 +166,6 @@ tmux/plugins/
 system_project/
 kitty/sessions/
 .nvim_project.json
+.agentic/
+.serena/
+1
