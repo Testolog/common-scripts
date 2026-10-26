@@ -160,3 +160,8 @@ venv.bak/
 
 ./nvim/lazy-lock.json
 ./nvim/coc-settings.json
+./custor_function.sh
+
+./tmux/plugins/
+./system_project/
+./kitty/sessions/
