@@ -9,12 +9,6 @@ return {
         }
     },
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-        opts = require("configs.catppuccin_opts")
-    },
-    {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -65,25 +59,6 @@ return {
         },
     },
     {
-        "folke/snacks.nvim",
-        priority = 1000,
-        lazy = false,
-        opts = {
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
-            bigfile = { enabled = true },
-            dashboard = { enabled = true },
-            picker = { enabled = true },
-            notifier = { enabled = false },
-            quickfile = { enabled = true },
-            terminal = { enabled = true },
-            matcher = {
-                frecency = true
-            }
-        },
-    },
-    {
         "rachartier/tiny-inline-diagnostic.nvim",
         event = "VeryLazy", -- Or `LspAttach`
         priority = 1001,    -- needs to be loaded in first
@@ -126,13 +101,14 @@ return {
 
         }
     },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-        ---@module 'render-markdown'
-        ---@type render.md.UserConfig
-        opts = {},
-    }
+    -- Deferred: Markdown is rendered by obsidian.nvim (tabs.shared.plugins). Do not load render-markdown.nvim.
+    -- {
+    --     'MeanderingProgrammer/render-markdown.nvim',
+    --     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+    --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    --     ---@module 'render-markdown'
+    --     ---@type render.md.UserConfig
+    --     opts = {},
+    -- }
 }

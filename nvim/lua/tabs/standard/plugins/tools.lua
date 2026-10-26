@@ -1,19 +1,3 @@
-local cmdline_config = function ()
-    local cmp = require("cmp")
-    local mapping = cmp.mapping.preset.cmdline()
-
-    cmp.setup.cmdline("/", { mapping = mapping, sources = { { name = "buffer" } } })
-
-    cmp.setup.cmdline(":", {
-        mapping = mapping,
-        sources = cmp.config.sources({ { name = "path" } }, {
-            {
-                name = "cmdline",
-                option = { ignore_cmds = { "Man", "!" } },
-            },
-        }),
-    })
-end
 return {
     {
         "oclay1st/maven.nvim",
@@ -58,37 +42,6 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         opts = require("configs.gitsigns_opts")
-    },
-    {
-        "hrsh7th/nvim-cmp",
-        event = 'InsertEnter',
-        opts = function ()
-            return require("configs.cmp_opts")
-        end,
-        dependencies = {
-            'L3MON4D3/LuaSnip',
-            'rafamadriz/friendly-snippets',
-
-            {
-                'hrsh7th/cmp-cmdline',
-                event = { "InsertEnter", "CmdlineEnter" },
-                config = cmdline_config
-            },
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-nvim-lsp",
-            "saadparwaiz1/cmp_luasnip",
-            {
-                "windwp/nvim-autopairs",
-                opts = { fast_wrap = {}, disable_filetype = { "TelescopePrompt", "vim" } },
-                config = function (_, opts) -- setup cmp for autopairs
-                    require("nvim-autopairs").setup(opts)
-                    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-                    require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
-                end,
-            },
-        },
     },
     { "christoomey/vim-tmux-navigator", lazy = false },
     {
@@ -142,18 +95,6 @@ return {
                 on_attach = on_attach,
             })
         end,
-    },
-    {
-        "kevinhwang91/nvim-ufo",
-        dependencies = {
-            "kevinhwang91/promise-async",
-            "nvim-treesitter/nvim-treesitter"
-        },
-        opts = {
-            provider_selector = function (bufnr, filetype, buftype)
-                return { 'treesitter', 'indent' }
-            end
-        }
     },
     {
         "mfussenegger/nvim-dap",

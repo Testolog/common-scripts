@@ -1,0 +1,205 @@
+{
+  "$schema": "../nvim/schema/nvim_project.schema.json",
+  "name": "system_project",
+  "lua": {
+    "version": 5.1
+  },
+  "yaml": {
+    "schemas": {}
+  },
+  "json": {
+    "schemas": {}
+  },
+  "project_type": [],
+  "system_prompt": [
+    { "name": "base", "path": "system_project/prompts/base.md" },
+    { "name": "java", "path": "system_project/prompts/java.md" },
+    { "name": "data", "path": "system_project/prompts/data.md" }
+  ],
+  "system_skills": [
+    { "name": "base", "path": "system_project/skills/base" }
+  ],
+  "project_prompt": [],
+  "project_skills": [],
+  "system_tools": [
+    {
+      "name": "fsearch",
+      "function": "$COMMON_SCRIPT/system_project/system_function/fsearch.sh",
+      "description": "Search file names: fsearch <pattern> [paths...]. Search inside files: fsearch <pattern> -f [paths...]. Runs `fsearch find` from the project root with project-wide depth. Do not use find or fzf.",
+      "kind": "shell",
+      "mutates": false
+    },
+    {
+      "name": "sd",
+      "function": "$COMMON_SCRIPT/system_project/system_function/sd.sh",
+      "description": "Literal edit of any text file: sd <file> <exact old text> <new text>. Uses `sd -F` and refuses when the old text is missing or matches more than once.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "dasel",
+      "function": "$COMMON_SCRIPT/system_project/system_function/dasel.sh",
+      "description": "Field edit for yaml, json, avsc, toml, xml, and csv: dasel <file> <selector> <value> [string|int|float|bool|json|yaml]. Writes the file in place.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "ast-grep",
+      "function": "$COMMON_SCRIPT/system_project/system_function/ast-grep.sh",
+      "description": "Structural rewrite of a repeated pattern: ast-grep <pattern> <lang> <rewrite> [paths...] runs `sg -p <pattern> -l <lang> -r <rewrite>` and applies it. No SQL. Avsc uses the JSON grammar or dasel.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "git apply",
+      "function": "git apply",
+      "description": "Apply a unified diff for a multi-hunk edit of any text file. Pass the patch file path or the diff on stdin. Use it when sd or dasel does not fit.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "lsp_hover",
+      "function": "textDocument/hover",
+      "description": "Hover information at file:line:column from the language server already attached in Neovim. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_definition",
+      "function": "textDocument/definition",
+      "description": "Definition location of the symbol at file:line:column from the attached language server. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_references",
+      "function": "textDocument/references",
+      "description": "All references to the symbol at file:line:column from the attached language server. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_rename",
+      "function": "textDocument/rename",
+      "description": "Rename the symbol at file:line:column to a new name through the attached language server. If no server is attached or it cannot rename, say so and use sd, dasel, or git apply. Never rename with sed or awk.",
+      "kind": "lsp",
+      "mutates": true
+    },
+    {
+      "name": "lua_ls",
+      "function": "lua_ls",
+      "description": "Lua language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "yamlls",
+      "function": "yamlls",
+      "description": "YAML language server attached in Neovim (project schemas). Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "jsonls",
+      "function": "jsonls",
+      "description": "JSON language server attached in Neovim (project schemas). Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "taplo",
+      "function": "taplo",
+      "description": "TOML language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "jdtls",
+      "function": "jdtls",
+      "description": "Java language server attached in Neovim when `jenv javahome` returns a JDK. Use through the lsp_* tools; rename Java symbols with lsp_rename.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "pyright",
+      "function": "pyright",
+      "description": "Python type server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "ruff",
+      "function": "ruff",
+      "description": "Python diagnostics and format server attached in Neovim; hover is disabled. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "rust_analyzer",
+      "function": "rust_analyzer",
+      "description": "Rust language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "clangd",
+      "function": "clangd",
+      "description": "C and C++ language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "arduino_language_server",
+      "function": "arduino_language_server",
+      "description": "Arduino sketch language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "serena",
+      "function": "serena",
+      "description": "Serena MCP server started by the supervisor for this agent's project root. Use it with the lsp_* tools to navigate and modify the project.",
+      "kind": "mcp",
+      "mutates": true
+    },
+    {
+      "name": "agent_create",
+      "function": "$COMMON_SCRIPT/system_project/system_function/agent_create.sh",
+      "description": "Spawn another agent for this project. Does not edit the project, so Ask mode may call it. When a change is needed in Ask mode, call this instead of refusing or telling the user to switch mode. Arguments: --message <instruction> [--name <name>] [--mode edit|ask] [--model <model>] [--manager <manager>]. Default mode is edit. Report the new agent id.",
+      "kind": "shell",
+      "mutates": false
+    },
+    {
+      "name": "agent_rename",
+      "function": "$COMMON_SCRIPT/system_project/system_function/agent_rename.sh",
+      "description": "Rename one agent of this project. Does not edit the project, so Ask mode may call it. One call renames one agent. Arguments: {\"agent\": \"<agent id>\", \"name\": \"<new name>\"}. Use the agent id from the system message to rename yourself. If a name matches more than one agent here, pass the agent id.",
+      "kind": "shell",
+      "mutates": false
+    }
+  ],
+  "project_tools": [],
+  "models": [
+    {
+      "name": "qwen2.5-coder:7b",
+      "vendor": "openai",
+      "context_limit": 32768,
+      "base_url": "http://127.0.0.1:11434/v1"
+    },
+    {
+      "name": "auto-smart[optimize_for=balanced]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "auto-smart[optimize_for=intelligence]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "auto-smart[optimize_for=cost]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    }
+  ],
+  "mcp_servers": []
+}
