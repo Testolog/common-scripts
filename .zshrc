@@ -56,7 +56,7 @@ fi
 source <(/Users/rnad/.playctx/bin/playctx-switcher --init=zsh)
 
 # Created by `pipx` on 2026-01-14 21:31:26
-export PATH="$PATH:/Users/rnad/.local/bin"
+export PATH="$PATH:/Users/rnad/.local/bin:/Users/rnad/.cargo/bin"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/rnad/.docker/completions $fpath)
 autoload -Uz compinit

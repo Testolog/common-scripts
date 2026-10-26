@@ -1,0 +1,1432 @@
+{
+  "system_prompt": [
+    {
+      "name": "base",
+      "path": "system_project/prompts/base.md"
+    },
+    {
+      "name": "java",
+      "path": "system_project/prompts/java.md"
+    },
+    {
+      "name": "data",
+      "path": "system_project/prompts/data.md"
+    }
+  ],
+  "system_skills": [
+    {
+      "name": "base",
+      "path": "system_project/skills/base"
+    }
+  ],
+  "system_tools": [
+    {
+      "name": "fsearch",
+      "function": "$COMMON_SCRIPT/system_project/system_function/fsearch.sh",
+      "description": "Search file names: fsearch <pattern> [paths...]. Search inside files: fsearch <pattern> -f [paths...]. Runs `fsearch find` from the project root with project-wide depth. Do not use find or fzf.",
+      "kind": "shell",
+      "mutates": false
+    },
+    {
+      "name": "sd",
+      "function": "$COMMON_SCRIPT/system_project/system_function/sd.sh",
+      "description": "Literal edit of any text file: sd <file> <exact old text> <new text>. Uses `sd -F` and refuses when the old text is missing or matches more than once.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "dasel",
+      "function": "$COMMON_SCRIPT/system_project/system_function/dasel.sh",
+      "description": "Field edit for yaml, json, avsc, toml, xml, and csv: dasel <file> <selector> <value> [string|int|float|bool|json|yaml]. Writes the file in place.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "ast-grep",
+      "function": "$COMMON_SCRIPT/system_project/system_function/ast-grep.sh",
+      "description": "Structural rewrite of a repeated pattern: ast-grep <pattern> <lang> <rewrite> [paths...] runs `sg -p <pattern> -l <lang> -r <rewrite>` and applies it. No SQL. Avsc uses the JSON grammar or dasel.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "git apply",
+      "function": "git apply",
+      "description": "Apply a unified diff for a multi-hunk edit of any text file. Pass the patch file path or the diff on stdin. Use it when sd or dasel does not fit.",
+      "kind": "shell",
+      "mutates": true
+    },
+    {
+      "name": "lsp_hover",
+      "function": "textDocument/hover",
+      "description": "Hover information at file:line:column from the language server already attached in Neovim. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_definition",
+      "function": "textDocument/definition",
+      "description": "Definition location of the symbol at file:line:column from the attached language server. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_references",
+      "function": "textDocument/references",
+      "description": "All references to the symbol at file:line:column from the attached language server. Does not start a server.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "lsp_rename",
+      "function": "textDocument/rename",
+      "description": "Rename the symbol at file:line:column to a new name through the attached language server. If no server is attached or it cannot rename, say so and use sd, dasel, or git apply. Never rename with sed or awk.",
+      "kind": "lsp",
+      "mutates": true
+    },
+    {
+      "name": "lua_ls",
+      "function": "lua_ls",
+      "description": "Lua language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "yamlls",
+      "function": "yamlls",
+      "description": "YAML language server attached in Neovim (project schemas). Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "jsonls",
+      "function": "jsonls",
+      "description": "JSON language server attached in Neovim (project schemas). Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "taplo",
+      "function": "taplo",
+      "description": "TOML language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "jdtls",
+      "function": "jdtls",
+      "description": "Java language server attached in Neovim when `jenv javahome` returns a JDK. Use through the lsp_* tools; rename Java symbols with lsp_rename.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "pyright",
+      "function": "pyright",
+      "description": "Python type server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "ruff",
+      "function": "ruff",
+      "description": "Python diagnostics and format server attached in Neovim; hover is disabled. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "rust_analyzer",
+      "function": "rust_analyzer",
+      "description": "Rust language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "clangd",
+      "function": "clangd",
+      "description": "C and C++ language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "arduino_language_server",
+      "function": "arduino_language_server",
+      "description": "Arduino sketch language server attached in Neovim. Use through the lsp_* tools.",
+      "kind": "lsp",
+      "mutates": false
+    },
+    {
+      "name": "serena",
+      "function": "serena",
+      "description": "Serena MCP server started by the supervisor for this agent's project root. Use it with the lsp_* tools to navigate and modify the project.",
+      "kind": "mcp",
+      "mutates": true
+    },
+    {
+      "name": "agent_create",
+      "function": "$COMMON_SCRIPT/system_project/system_function/agent_create.sh",
+      "description": "Spawn another agent for this project. Does not edit the project, so Ask mode may call it. When a change is needed in Ask mode, call this instead of refusing or telling the user to switch mode. Arguments: --message <instruction> [--name <name>] [--mode edit|ask] [--model <model>] [--manager <manager>]. Default mode is edit. Report the new agent id.",
+      "kind": "shell",
+      "mutates": false
+    },
+    {
+      "name": "agent_rename",
+      "function": "$COMMON_SCRIPT/system_project/system_function/agent_rename.sh",
+      "description": "Rename one agent of this project. Does not edit the project, so Ask mode may call it. One call renames one agent. Arguments: {\"agent\": \"<agent id>\", \"name\": \"<new name>\"}. Use the agent id from the system message to rename yourself. If a name matches more than one agent here, pass the agent id.",
+      "kind": "shell",
+      "mutates": false
+    }
+  ],
+  "models": [
+    {
+      "name": "qwen2.5-coder:7b",
+      "vendor": "openai",
+      "context_limit": 32768,
+      "base_url": "http://127.0.0.1:11434/v1"
+    },
+    {
+      "name": "auto-smart[optimize_for=balanced]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "auto-smart[optimize_for=intelligence]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "auto-smart[optimize_for=cost]",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.3-codex-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "composer-2.5",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.7-flash-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "grok-4.7-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.6-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "composer-2.5-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-5-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-5-thinking-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-8-thinking-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-4-argon-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-4-argon-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-4-argon-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-none-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-sol-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-none-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-extra-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.5-extra-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-1-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-fable-5-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "cursor-grok-4.5-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.8-flash-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.8-flash-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.8-flash-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.7-flash-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.7-flash-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-none-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-terra-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-5-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-5-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-sonnet-5-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-sonnet-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-sonnet-medium-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-opus-4-7-thinking-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-opus-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-opus-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-opus-high-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.6-opus-max-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.5-opus-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.5-opus-high-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.2-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-none-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-low-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-medium-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-high-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-xhigh-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.6-luna-max-fast",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.6-flash-minimal",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.6-flash-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.6-flash-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.6-flash-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.1-pro",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-mini-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-mini-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-mini-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-mini-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-mini-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-nano-none",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-nano-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-nano-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-nano-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.4-nano-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-thinking-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-thinking-medium",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-thinking-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-thinking-xhigh",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-haiku-5-5-thinking-max",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.5-sonnet",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4.5-sonnet-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.1-low",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.1",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5.1-high",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3-flash",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gemini-3.5-flash",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4-sonnet",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "claude-4-sonnet-thinking",
+      "vendor": "cursor",
+      "context_limit": 200000
+    },
+    {
+      "name": "gpt-5-mini",
+      "vendor": "cursor",
+      "context_limit": 200000
+    }
+  ],
+  "mcp_servers": []
+}

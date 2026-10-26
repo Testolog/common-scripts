@@ -24,15 +24,13 @@ local function load_config(start)
     json = { schemas = {}, schema_store_url = nil },
   }
 
-  -- If the file doesn't exist in the resolved root, write a standalone file from the system-project template
+  -- Missing file: in-memory defaults only. :NvimProjectInit writes .nvim_project.json.
   if lfs.attributes(prj_file, "mode") == nil then
-    local created = require("system_project").create_project_file(root, default)
-    local merged = util.merge_table(default, created)
-    merged.root = root
-    return merged
+    default.root = root
+    return default
   end
 
-  -- An existing file is read as stored and never rewritten here
+  -- An existing file is read as stored. Opening does not merge or rewrite it.
   local data = util.read_json(prj_file)
   local merged = util.merge_table(default, data)
   merged.root = root
@@ -51,7 +49,7 @@ function M.load_vim_libs(lua_version)
   end
 end
 
--- Project settings for the project that contains `dir` (creating its file when missing).
+-- Project settings for the project that contains `dir`.
 function M.load_project(dir)
   return load_config(vim.fs.normalize(dir))
 end

@@ -163,7 +163,8 @@ nvim/coc-settings.json
 custor_function.sh
 
 tmux/plugins/
-system_project/
+system_project/*
+!system_project/nvim_project.template.json
 kitty/sessions/
 .nvim_project.json
 .agentic/
